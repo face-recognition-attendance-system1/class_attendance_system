@@ -3,6 +3,7 @@ from pymongo import MongoClient
 import cv2, numpy as np, datetime
 from insightface.app import FaceAnalysis
 from sklearn.metrics.pairwise import cosine_similarity
+import re
 
 # ---------------------------
 # Config
@@ -105,18 +106,27 @@ def video_feed():
 @app.route("/", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
-        if username == ADMIN_USER and password == ADMIN_PASS:
+       username = sanitize_input(request.form["username"])
+       password = request.form["password"]  # don’t sanitize password, hash it
+       if username == ADMIN_USER and password == ADMIN_PASS:
             session["admin"] = True
             return redirect(url_for("home"))
-        return render_template("login.html", error="Invalid credentials")
+       return render_template("login.html", error="Invalid credentials")
     return render_template("login.html")
 
 @app.route("/logout")
 def logout():
     session.pop("admin", None)
     return redirect(url_for("login"))
+
+#---------------------------------------
+#santization process
+#---------------------------------------
+
+def sanitize_input(input_str):
+    if not isinstance(input_str, str):
+        return ""
+    return re.sub(r"[^a--Z0zA-9_@.\- ]", "", input_str)
 
 # ---------------------------
 # Admin Pages
@@ -178,9 +188,9 @@ def recognize_status():
 def register_unknown():
     global known_embeddings
     data = request.json
-    student_id = data["student_id"]
-    name = data["name"]
-
+     # don’t sanitize password, hash it
+    student_id = sanitize_input(data["student_id"])
+    name = sanitize_input(data["name"])
     ret, frame = cap.read()
     faces = app_face.get(frame)
     if len(faces) == 0:
@@ -194,7 +204,6 @@ def register_unknown():
     })
     known_embeddings = load_known_faces()
     return jsonify({"status": "success", "message": f"{name} registered successfully!"})
-
 # ---------------------------
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
