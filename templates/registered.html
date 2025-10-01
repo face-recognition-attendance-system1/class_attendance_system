@@ -300,12 +300,17 @@
     }
 
     .footer {
-      text-align: center;
-      padding: 20px;
-      color: rgba(255, 255, 255, 0.5);
-       font-size: 20px;
-      margin-top: 30px;
-      border-top: 1px solid rgba(0, 198, 255, 0.2);
+        position: fixed;
+        font-size: 0.9rem;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        padding: 20px;
+        color: rgba(255, 255, 255, 0.5);
+        background: transparent;
+        border-top: 1px solid rgba(0, 198, 255, 0.2);
+        z-index: 99;
     }
 
     /* Accordion Styling */
@@ -578,21 +583,6 @@
   <!-- Animated Background Pattern -->
   <div class="background-pattern"></div>
   
-  <!-- Animated Face Pattern Lines in Foreground -->
-  <div class="face-pattern-lines">
-    <div class="face-line"></div>
-    <div class="face-line"></div>
-    <div class="face-line"></div>
-    <div class="face-line"></div>
-    <div class="face-line"></div>
-    <div class="face-line"></div>
-    <div class="face-line"></div>
-    <div class="face-line"></div>
-  </div>
-  
-  <!-- Face Grid Animation -->
-  <div class="face-grid" id="faceGrid"></div>
-  
   <!-- Face Recognition Animation -->
   <div class="face-recognition-animation">
     <div class="face-circle"></div>
@@ -606,11 +596,11 @@
   <div style="width:100%; display:flex; flex-direction:column; align-items:center;">
     <a class="navbar-brand mb-4" href="#" style="font-size:1.4rem;">
       <i class="fas fa-camera-retro me-2"></i>
-      Home
+      Registered Staffs
     </a>
     <ul class="navbar-nav w-100" style="flex-direction:column; margin-top:0;">
       <li class="nav-item mb-2">
-        <a class="nav-link" href="{{ url_for('home') }}"><i class="fas fa-home me-1"></i> Notifications</a>
+        <a class="nav-link" href="{{ url_for('home') }}"><i class="fas fa-home me-1"></i> Home</a>
       </li>
       <li class="nav-item mb-2">
         <a class="nav-link" href="{{ url_for('register_page') }}"><i class="fas fa-user-plus me-1"></i> Register</a>
@@ -619,13 +609,13 @@
         <a class="nav-link" href="{{ url_for('admin_register_page') }}"><i class="fas fa-user-shield me-1"></i> Admin Register</a>
       </li>
       <li class="nav-item mb-2">
-        <a class="nav-link active" href="{{ url_for('attendance') }}"><i class="fas fa-chart-bar me-1"></i> Attendance</a>
+        <a class="nav-link" href="{{ url_for('attendance') }}"><i class="fas fa-chart-bar me-1"></i> Attendance</a>
       </li>
       <li class="nav-item mb-2">
         <a class="nav-link" href="{{url_for('notifications')}}"><i class="fas fa-bell me-1"></i> Notifications</a>
       </li>
       <li class="nav-item mb-2">
-        <a class="nav-link" href="#"><i class="fas fa-users me-1"></i> Registered Staff</a>
+        <a class="nav-link active" href="#"><i class="fas fa-users me-1"></i> Registered Staff</a>
       </li>
     </ul>
   </div>
@@ -888,34 +878,13 @@
 
   <!-- Footer -->
    <div class="footer">
-      <p>© 2025 Face Recognition Attendance System | developed by ET08</i></p>
+      <p>© 2025 Face Recognition Attendance System | Developed by ET08</i></p>
     </div>
 
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // Generate face grid cells
-    function generateFaceGrid() {
-      const grid = document.getElementById('faceGrid');
-      const cellSize = 50;
-      const cols = Math.ceil(window.innerWidth / cellSize);
-      const rows = Math.ceil(window.innerHeight / cellSize);
-      
-      for (let i = 0; i < rows; i++) {
-        for (let j = 0; j < cols; j++) {
-          const cell = document.createElement('div');
-          cell.className = 'grid-cell';
-          cell.style.left = `${j * cellSize}px`;
-          cell.style.top = `${i * cellSize}px`;
-          cell.style.animationDelay = `${Math.random() * 4}s`;
-          grid.appendChild(cell);
-        }
-      }
-    }
-
-    // Initialize grid on page load
-    window.addEventListener('load', generateFaceGrid);
 
     // Fire button functionality
     document.querySelectorAll('.fire-btn').forEach(btn => {

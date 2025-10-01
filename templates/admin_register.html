@@ -447,12 +447,17 @@
     }
     
     .footer {
-      text-align: center;
-      padding: 20px;
-      color: rgba(255, 255, 255, 0.5);
-      font-size: 20px;
-      margin-top: 30px;
-      border-top: 1px solid rgba(0, 198, 255, 0.2);
+        position: fixed;
+        left: 0;
+        font-size:0.9em;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        padding: 20px;
+        color: rgba(255, 255, 255, 0.5);
+        background: transparent;
+        border-top: 1px solid rgba(0, 198, 255, 0.2);
+        z-index: 99;
     }
     
     .camera-overlay {
@@ -592,61 +597,49 @@
   <div class="background-pattern"></div>
   
   <!-- Animated Face Pattern Lines in Foreground -->
-  <div class="face-pattern-lines">
-    <div class="face-line"></div>
-    <div class="face-line"></div>
-    <div class="face-line"></div>
-    <div class="face-line"></div>
-    <div class="face-line"></div>
-    <div class="face-line"></div>
-    <div class="face-line"></div>
-    <div class="face-line"></div>
-  </div>
   
   <!-- Face Grid Animation -->
   <div class="face-grid" id="faceGrid"></div>
   
-  <!-- Face Recognition Animation -->
-  <div class="face-recognition-animation">
-    <div class="face-circle"></div>
-    <div class="face-circle"></div>
-    <div class="face-circle"></div>
-  </div>
 
   <!-- Navigation Bar -->
-  <nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container">
-      <a class="navbar-brand" href="#">
-        <i class="fas fa-camera-retro me-2"></i>
-        Face Recognition Attendance
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('home') }}" onclick="stopCamera()"><i class="fas fa-home me-1"></i> Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('register_page') }}" onclick="stopCamera()"><i class="fas fa-user-plus me-1"></i> Register</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="#" onclick="stopCamera()"><i class="fas fa-user-shield me-1"></i> Admin Register</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('attendance') }}" onclick="stopCamera()"><i class="fas fa-chart-bar me-1"></i> Attendance</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('notifications') }}" onclick="stopCamera()"><i class="fas fa-bell me-1"></i> Notifications</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('registered') }}" onclick="stopCamera()"><i class="fas fa-users me-1"></i> Registered Staffs</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+<nav class="navbar navbar-dark"
+     style="height:100vh; width:220px; position:fixed; top:0; left:0; z-index:100; border-radius:0; border-right:1px solid rgba(0,198,255,0.2); background:rgba(10,17,40,0.95); display:flex; flex-direction:column; align-items:center; padding-top:30px; justify-content:space-between;">
+  <div style="width:100%; display:flex; flex-direction:column; align-items:center;">
+    <a class="navbar-brand mb-4" href="#" style="font-size:1.4rem; text-align: left;">
+      <i class="fas fa-camera-retro me-2"></i>
+      Admin Register
+    </a>
+    <ul class="navbar-nav w-100" style="flex-direction:column; margin-top:0;">
+      <li class="nav-item mb-2">
+        <a class="nav-link" href="{{ url_for('home') }}"><i class="fas fa-home me-1"></i> Home</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link" href="{{ url_for('register_page') }}"><i class="fas fa-user-plus me-1"></i> Register</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link active" href="#"><i class="fas fa-user-shield me-1"></i> Admin Register</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link " href="{{ url_for('attendance') }}"><i class="fas fa-chart-bar me-1"></i> Attendance</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link" href="{{ url_for('notifications') }}"><i class="fas fa-bell me-1"></i> Notifications</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link" href="{{ url_for('registered') }}"><i class="fas fa-users me-1"></i> Registered Staff</a>
+      </li>
+    </ul>
+  </div>
+  <hr style="width:80%; border-color: rgba(255, 255, 255, 0.2);">
+  <div style="width:100%; display:flex; flex-direction:column; align-items:center; margin-bottom:30px;">
+    <ul class="navbar-nav w-100">
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt me-1"></i> Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
 
   <!-- Main Content -->
   <div class="container main-container">
@@ -802,27 +795,7 @@
   <script>
     let intervalId;
 
-    // Generate face grid cells
-    function generateFaceGrid() {
-      const grid = document.getElementById('faceGrid');
-      const cellSize = 50;
-      const cols = Math.ceil(window.innerWidth / cellSize);
-      const rows = Math.ceil(window.innerHeight / cellSize);
-      
-      for (let i = 0; i < rows; i++) {
-        for (let j = 0; j < cols; j++) {
-          const cell = document.createElement('div');
-          cell.className = 'grid-cell';
-          cell.style.left = `${j * cellSize}px`;
-          cell.style.top = `${i * cellSize}px`;
-          cell.style.animationDelay = `${Math.random() * 4}s`;
-          grid.appendChild(cell);
-        }
-      }
-    }
 
-    // Initialize grid on page load
-    window.addEventListener('load', generateFaceGrid);
 
     function startCamera() {
       const videoContainer = document.getElementById("videoContainer");

@@ -377,11 +377,17 @@
     
     
     .footer {
-      text-align: center;
-      padding: 20px;
-      color: rgba(255, 255, 255, 0.5);
-      font-size: 0.9rem;
-      margin-top: 20px;
+        position: fixed;
+        font-size: 0.9rem;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        padding: 20px;
+        color: rgba(255, 255, 255, 0.5);
+        background: transparent;
+        border-top: 1px solid rgba(0, 198, 255, 0.2);
+        z-index: 99;
     }
     
     .login-icon {
@@ -403,23 +409,7 @@
       }
     }
     
-    /* .input-icon {
-      position: relative;
-    }
-    
-    .input-icon i {
-      position: absolute;
-      left: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--primary-color);
-      z-index: 2;
-    }
-    
-    .input-icon .form-control {
-      padding-left: 45px;
-    }
-     */
+
     /* Responsive Adjustments */
     @media (max-width: 768px) {
       .login-container {
@@ -502,7 +492,7 @@
       </div>
     </div>
     <div class="footer">
-      <p>© 2025 Face Recognition Attendance System | developed by ET08</i></p>
+      <p>© 2025 Face Recognition Attendance System | Developed by ET08</i></p>
     </div>
   </div>
   <!-- Bootstrap JS -->

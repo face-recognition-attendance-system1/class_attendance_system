@@ -277,12 +277,17 @@
 
     /* Footer */
   .footer {
-      margin-top: 80px;
-      text-align: center;
-      color: rgba(255, 255, 255, 0.5);
-      padding: 10px ;
-      font-size: 20px;
-      border-top: 1px solid rgba(0, 198, 255, 0.2);
+        position: fixed;
+        font-size: 0.9rem;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        padding: 20px;
+        color: rgba(255, 255, 255, 0.5);
+        background: transparent;
+        border-top: 1px solid rgba(0, 198, 255, 0.2);
+        z-index: 99;
     }
 
     /* Responsive Adjustments */
@@ -310,7 +315,10 @@
   </style>
 </head>
 <body>
+
   <!-- Animated Background with Face Patterns -->
+  <div class="background-pattern"></div>
+
   <div class="background-container">
     <svg class="face-pattern" viewBox="0 0 100 100">
       <circle cx="50" cy="40" r="20" fill="none" stroke="var(--primary)" stroke-width="2"/>
@@ -337,19 +345,20 @@
       <path d="M 40 50 Q 50 60 60 50" stroke="var(--success)" stroke-width="2" fill="none"/>
     </svg>
   </div>
+  </div>
 
   <!-- Navbar -->
 <!-- ...replace the <nav> block with the following... -->
 <nav class="navbar navbar-dark"
      style="height:100vh; width:220px; position:fixed; top:0; left:0; z-index:100; border-radius:0; border-right:1px solid rgba(0,198,255,0.2); background:rgba(10,17,40,0.95); display:flex; flex-direction:column; align-items:center; padding-top:30px; justify-content:space-between;">
   <div style="width:100%; display:flex; flex-direction:column; align-items:center;">
-    <a class="navbar-brand mb-4" href="#" style="font-size:1.4rem;">
+    <a class="navbar-brand mb-4" href="#" style="font-size:1.4rem; text-align: left;">
       <i class="fas fa-camera-retro me-2"></i>
       Home
     </a>
     <ul class="navbar-nav w-100" style="flex-direction:column; margin-top:0;">
       <li class="nav-item mb-2">
-        <a class="nav-link" href="#"><i class="fas fa-home me-1"></i> Home</a>
+        <a class="nav-link active" href="#"><i class="fas fa-home me-1"></i> Home</a>
       </li>
       <li class="nav-item mb-2">
         <a class="nav-link" href="{{ url_for('register_page') }}"><i class="fas fa-user-plus me-1"></i> Register</a>
@@ -358,7 +367,7 @@
         <a class="nav-link" href="{{ url_for('admin_register_page') }}"><i class="fas fa-user-shield me-1"></i> Admin Register</a>
       </li>
       <li class="nav-item mb-2">
-        <a class="nav-link active" href="{{ url_for('attendance') }}"><i class="fas fa-chart-bar me-1"></i> Attendance</a>
+        <a class="nav-link " href="{{ url_for('attendance') }}"><i class="fas fa-chart-bar me-1"></i> Attendance</a>
       </li>
       <li class="nav-item mb-2">
         <a class="nav-link" href="{{ url_for('notifications') }}"><i class="fas fa-bell me-1"></i> Notifications</a>
@@ -368,6 +377,7 @@
       </li>
     </ul>
   </div>
+  <hr style="width:80%; border-color: rgba(255, 255, 255, 0.2);">
   <div style="width:100%; display:flex; flex-direction:column; align-items:center; margin-bottom:30px;">
     <ul class="navbar-nav w-100">
       <li class="nav-item">
@@ -447,8 +457,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
   <script>
     AOS.init({
-      duration: 1000,
-      once: true
+      duration: 800,
+      easing: 'ease-in-out',
+      once: true,
     });
   </script>
 </body>
