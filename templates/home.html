@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Face Recognition Attendance</title>
+  <link rel="icon" type="image/x-icon" href="../image/favicon/favicon.ico">
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- AOS Animations -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+
+  <style>
+    :root {
+      --primary: #00c6ff;
+      --secondary: #0072ff;
+      --accent: #7e42ff;
+      --success: #00ff88;
+      --danger: #ff2d75;
+      --warning: #ffbd2e;
+      --info: #2ef0ff;
+      --light: #f0f8ff;
+      --dark: #0a1128;
+      --darker: #050a1a;
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--darker), var(--dark));
+      font-family: 'Segoe UI', 'Roboto', sans-serif;
+      color: var(--light);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Animated Background with Face Patterns */
+    .background-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .face-pattern {
+      position: absolute;
+      opacity: 0.03;
+      filter: blur(1px);
+      animation: float 20s infinite linear;
+    }
+
+    .face-pattern:nth-child(1) {
+      top: 10%;
+      left: 5%;
+      width: 150px;
+      height: 150px;
+      animation-delay: 0s;
+    }
+
+    .face-pattern:nth-child(2) {
+      top: 70%;
+      left: 80%;
+      width: 120px;
+      height: 120px;
+      animation-delay: -5s;
+      animation-direction: reverse;
+    }
+
+    .face-pattern:nth-child(3) {
+      top: 30%;
+      left: 85%;
+      width: 100px;
+      height: 100px;
+      animation-delay: -10s;
+    }
+
+    .face-pattern:nth-child(4) {
+      top: 80%;
+      left: 10%;
+      width: 180px;
+      height: 180px;
+      animation-delay: -15s;
+      animation-direction: reverse;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+      25% {
+        transform: translate(10px, 15px) rotate(5deg);
+      }
+      50% {
+        transform: translate(20px, 5px) rotate(0deg);
+      }
+      75% {
+        transform: translate(10px, -5px) rotate(-5deg);
+      }
+      100% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+    }
+
+    /* Navbar */
+   .main-container {
+    margin-left: 240px; /* shift content right to make space for vertical nav */
+  }
+  @media (max-width: 768px) {
+    nav.navbar {
+      width: 100vw;
+      height: auto;
+      position: static;
+      flex-direction: row;
+      padding-top: 10px;
+      border-right: none;
+      border-bottom: 1px solid rgba(0,198,255,0.2);
+    }
+    .main-container {
+      margin-left: 0;
+      margin-top: 80px;
+    }
+    .navbar-nav {
+      flex-direction: row !important;
+      width: 100%;
+      justify-content: space-around;
+    }
+    .nav-item {
+      margin-bottom: 0 !important;
+    }
+  }
+
+    /* Logout Button */
+    .btn-logout {
+      background: linear-gradient(90deg, var(--danger), #c0392b);
+      border: none;
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 3px 10px rgba(255, 45, 117, 0.3);
+      margin-left: 10px;
+    }
+
+    .btn-logout::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: all 0.6s ease;
+    }
+
+    .btn-logout:hover {
+      background: linear-gradient(90deg, #c0392b, var(--danger));
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 45, 117, 0.4);
+    }
+
+    .btn-logout:hover::before {
+      left: 100%;
+    }
+
+    /* Dashboard */
+    .dashboard-header {
+      text-align: center;
+      margin-bottom: 50px;
+      padding-top: 30px;
+    }
+
+    .dashboard-header h2 {
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .dashboard-header p {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1.1rem;
+    }
+
+    /* Stats Cards */
+    .stat-card {
+      background: rgba(10, 17, 40, 0.6);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      border: 1px solid rgba(0, 198, 255, 0.2);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      transition: all 0.4s ease;
+      overflow: hidden;
+      position: relative;
+      padding: 25px 20px;
+      height: 100%;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+    }
+
+    .stat-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(0, 198, 255, 0.2);
+      border-color: rgba(0, 198, 255, 0.5);
+    }
+
+    .stat-icon {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stat-card h5 {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+
+    .stat-card .h3 {
+      font-weight: 700;
+      font-size: 2.2rem;
+    }
+
+    /* Custom Buttons */
+    .btn-custom {
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border: none;
+      padding: 12px 30px;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 198, 255, 0.3);
+    }
+
+    .btn-custom::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: all 0.6s ease;
+    }
+
+    .btn-custom:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 198, 255, 0.4);
+    }
+
+    .btn-custom:hover::before {
+      left: 100%;
+    }
+
+    /* Footer */
+  .footer {
+      margin-top: 80px;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.5);
+      padding: 10px ;
+      font-size: 20px;
+      border-top: 1px solid rgba(0, 198, 255, 0.2);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .dashboard-header h2 {
+        font-size: 2rem;
+      }
+      
+      .stat-card {
+        margin-bottom: 20px;
+      }
+      
+      .btn-custom {
+        display: block;
+        width: 100%;
+        margin-bottom: 15px;
+      }
+
+      .btn-logout {
+        margin-left: 0;
+        margin-top: 10px;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated Background with Face Patterns -->
+  <div class="background-container">
+    <svg class="face-pattern" viewBox="0 0 100 100">
+      <circle cx="50" cy="40" r="20" fill="none" stroke="var(--primary)" stroke-width="2"/>
+      <circle cx="40" cy="35" r="3" fill="var(--primary)"/>
+      <circle cx="60" cy="35" r="3" fill="var(--primary)"/>
+      <path d="M 40 50 Q 50 60 60 50" stroke="var(--primary)" stroke-width="2" fill="none"/>
+    </svg>
+    <svg class="face-pattern" viewBox="0 0 100 100">
+      <circle cx="50" cy="40" r="20" fill="none" stroke="var(--accent)" stroke-width="2"/>
+      <circle cx="40" cy="35" r="3" fill="var(--accent)"/>
+      <circle cx="60" cy="35" r="3" fill="var(--accent)"/>
+      <path d="M 40 50 Q 50 60 60 50" stroke="var(--accent)" stroke-width="2" fill="none"/>
+    </svg>
+    <svg class="face-pattern" viewBox="0 0 100 100">
+      <circle cx="50" cy="40" r="20" fill="none" stroke="var(--info)" stroke-width="2"/>
+      <circle cx="40" cy="35" r="3" fill="var(--info)"/>
+      <circle cx="60" cy="35" r="3" fill="var(--info)"/>
+      <path d="M 40 50 Q 50 60 60 50" stroke="var(--info)" stroke-width="2" fill="none"/>
+    </svg>
+    <svg class="face-pattern" viewBox="0 0 100 100">
+      <circle cx="50" cy="40" r="20" fill="none" stroke="var(--success)" stroke-width="2"/>
+      <circle cx="40" cy="35" r="3" fill="var(--success)"/>
+      <circle cx="60" cy="35" r="3" fill="var(--success)"/>
+      <path d="M 40 50 Q 50 60 60 50" stroke="var(--success)" stroke-width="2" fill="none"/>
+    </svg>
+  </div>
+
+  <!-- Navbar -->
+<!-- ...replace the <nav> block with the following... -->
+<nav class="navbar navbar-dark"
+     style="height:100vh; width:220px; position:fixed; top:0; left:0; z-index:100; border-radius:0; border-right:1px solid rgba(0,198,255,0.2); background:rgba(10,17,40,0.95); display:flex; flex-direction:column; align-items:center; padding-top:30px; justify-content:space-between;">
+  <div style="width:100%; display:flex; flex-direction:column; align-items:center;">
+    <a class="navbar-brand mb-4" href="#" style="font-size:1.4rem;">
+      <i class="fas fa-camera-retro me-2"></i>
+      Home
+    </a>
+    <ul class="navbar-nav w-100" style="flex-direction:column; margin-top:0;">
+      <li class="nav-item mb-2">
+        <a class="nav-link" href="#"><i class="fas fa-home me-1"></i> Home</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link" href="{{ url_for('register_page') }}"><i class="fas fa-user-plus me-1"></i> Register</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link" href="{{ url_for('admin_register_page') }}"><i class="fas fa-user-shield me-1"></i> Admin Register</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link active" href="{{ url_for('attendance') }}"><i class="fas fa-chart-bar me-1"></i> Attendance</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link" href="{{ url_for('notifications') }}"><i class="fas fa-bell me-1"></i> Notifications</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link" href="{{ url_for('registered') }}"><i class="fas fa-users me-1"></i> Registered Staff</a>
+      </li>
+    </ul>
+  </div>
+  <div style="width:100%; display:flex; flex-direction:column; align-items:center; margin-bottom:30px;">
+    <ul class="navbar-nav w-100">
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt me-1"></i> Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<!-- ...existing code... -->
+  <!-- Dashboard -->
+  <div class="container mt-5">
+    <div class="dashboard-header" data-aos="fade-down">
+      <h2>Welcome, {{ session.get('admin', 'Admin') }} 👋</h2>
+      <p class="text-muted">Here's a quick overview of today's attendance statistics</p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row g-4">
+      <div class="col-md-4" data-aos="zoom-in">
+        <div class="card stat-card text-center">
+          <i class="fas fa-users stat-icon"></i>
+          <h5>Total Registered</h5>
+          <p class="h3">{{ stats.total_registered | default(0) }}</p>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
+        <div class="card stat-card text-center">
+          <i class="fas fa-user-check stat-icon"></i>
+          <h5>Present Today</h5>
+          <p class="h3 text-success">{{ stats.present_today | default(0) }}</p>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
+        <div class="card stat-card text-center">
+          <i class="fas fa-user-times stat-icon"></i>
+          <h5>Absent Today</h5>
+          <p class="h3 text-danger">{{ stats.absent_today | default(0) }}</p>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="zoom-in" data-aos-delay="300">
+        <div class="card stat-card text-center">
+          <i class="fas fa-clock stat-icon"></i>
+          <h5>Avg Login Time</h5>
+          <p class="h3">{{ stats.avg_login_time | default('N/A') }}</p>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="zoom-in" data-aos-delay="400">
+        <div class="card stat-card text-center">
+          <i class="fas fa-fire stat-icon"></i>
+          <h5>Total Fired</h5>
+          <p class="h3">{{ stats.total_fired | default(0) }}</p>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="zoom-in" data-aos-delay="500">
+        <div class="card stat-card text-center">
+          <i class="fas fa-bell stat-icon"></i>
+          <h5>Notifications</h5>
+          <p class="h3 text-warning">{{ stats.notifications | default(0) }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="text-center mt-5" data-aos="fade-up">
+      <a href="{{ url_for('register_page') }}" class="btn btn-custom me-3"><i class="fas fa-user-plus me-2"></i> Register New Staff</a>
+      <a href="{{ url_for('attendance') }}" class="btn btn-custom me-3"><i class="fas fa-chart-bar me-2"></i> View Attendance</a>
+      <a href="{{ url_for('registered') }}" class="btn btn-custom"><i class="fas fa-users me-2"></i> Registered Staffs</a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>© 2025 Face Recognition Attendance System | developed by ET08</p>
+  </div>
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 1000,
+      once: true
+    });
+  </script>
+</body>
+</html>

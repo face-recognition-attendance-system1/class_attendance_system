@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login</title>
+  <link rel="icon" type="image/x-icon" href="../image/favicon/favicon.ico">
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #00c6ff;
+      --secondary-color: #0072ff;
+      --accent-color: #7e42ff;
+      --success-color: #00ff88;
+      --danger-color: #ff2d75;
+      --warning-color: #ffbd2e;
+      --info-color: #2ef0ff;
+      --light-bg: #0a1128;
+      --dark-text: #e0e0e0;
+      --card-bg: rgba(10, 17, 40, 0.7);
+    }
+    
+    body {
+      background: linear-gradient(135deg, #050a1a, #0a1128);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--dark-text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+    
+    /* Animated Background Pattern */
+    .background-pattern {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.1;
+      background: 
+        radial-gradient(circle at 20% 30%, var(--primary-color) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, var(--accent-color) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, var(--info-color) 0%, transparent 50%);
+      background-size: 600px 600px;
+      animation: patternMove 30s infinite linear;
+    }
+    
+    @keyframes patternMove {
+      0% {
+        background-position: 0 0, 0 0, 0 0;
+      }
+      100% {
+        background-position: 600px 600px, -600px -600px, 300px -300px;
+      }
+    }
+    
+    /* Animated Face Pattern Lines in Foreground */
+    .face-pattern-lines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+    
+    .face-line {
+      position: absolute;
+      background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+      opacity: 0.1;
+      animation: lineScan 8s infinite linear;
+    }
+    
+    .face-line:nth-child(1) {
+      top: 20%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      animation-delay: 0s;
+    }
+    
+    .face-line:nth-child(2) {
+      top: 40%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      animation-delay: 2s;
+    }
+    
+    .face-line:nth-child(3) {
+      top: 60%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      animation-delay: 4s;
+    }
+    
+    .face-line:nth-child(4) {
+      top: 80%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      animation-delay: 6s;
+    }
+    
+    .face-line:nth-child(5) {
+      top: 0;
+      left: 20%;
+      width: 1px;
+      height: 100%;
+      animation-delay: 1s;
+    }
+    
+    .face-line:nth-child(6) {
+      top: 0;
+      left: 40%;
+      width: 1px;
+      height: 100%;
+      animation-delay: 3s;
+    }
+    
+    .face-line:nth-child(7) {
+      top: 0;
+      left: 60%;
+      width: 1px;
+      height: 100%;
+      animation-delay: 5s;
+    }
+    
+    .face-line:nth-child(8) {
+      top: 0;
+      left: 80%;
+      width: 1px;
+      height: 100%;
+      animation-delay: 7s;
+    }
+    
+    @keyframes lineScan {
+      0% {
+        opacity: 0.1;
+        transform: scaleX(0);
+      }
+      50% {
+        opacity: 0.3;
+        transform: scaleX(1);
+      }
+      100% {
+        opacity: 0.1;
+        transform: scaleX(0);
+      }
+    }
+    
+    /* Face Grid Animation */
+    .face-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.05;
+    }
+    
+    .grid-cell {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      border: 1px solid var(--primary-color);
+      animation: gridPulse 4s infinite ease-in-out;
+    }
+    
+    @keyframes gridPulse {
+      0%, 100% {
+        opacity: 0.1;
+        box-shadow: 0 0 5px var(--primary-color);
+      }
+      50% {
+        opacity: 0.3;
+        box-shadow: 0 0 15px var(--primary-color);
+      }
+    }
+    
+    /* Face Recognition Animation */
+    .face-recognition-animation {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      height: 300px;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.1;
+    }
+    
+    .face-circle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 2px solid var(--primary-color);
+      animation: faceScan 6s infinite ease-in-out;
+    }
+    
+    .face-circle:nth-child(1) {
+      width: 100px;
+      height: 100px;
+      animation-delay: 0s;
+    }
+    
+    .face-circle:nth-child(2) {
+      width: 200px;
+      height: 200px;
+      animation-delay: 2s;
+    }
+    
+    .face-circle:nth-child(3) {
+      width: 300px;
+      height: 300px;
+      animation-delay: 4s;
+    }
+    
+    @keyframes faceScan {
+      0%, 100% {
+        opacity: 0.1;
+        box-shadow: 0 0 10px var(--primary-color);
+      }
+      50% {
+        opacity: 0.3;
+        box-shadow: 0 0 30px var(--primary-color);
+      }
+    }
+    
+    .login-container {
+      max-width: 550px;
+      width: 200%;
+      padding: 20px;
+    }
+    .input-icon {
+      position: relative; /* container relative */
+    }
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(0, 198, 255, 0.2);
+      overflow: hidden;
+      position: relative;
+      animation: cardFloat 6s ease-in-out infinite;
+    }
+    
+    @keyframes cardFloat {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+    
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    }
+    
+    .card-header {
+      background: transparent;
+      color: white;
+      border-radius: 20px 20px 0 0 !important;
+      font-weight: 600;
+      text-align: center;
+      border-bottom: 1px solid rgba(0, 198, 255, 0.2);
+      padding: 25px;
+    }
+    
+    .card-body {
+      padding: 30px;
+    }
+    
+    .form-control {
+      background: rgb(78, 75, 92);
+      color: rgb(255, 255, 255);
+      border: 1px solid rgba(0, 198, 255, 0.3);
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+    
+      transition: all 0.3s ease;
+    }
+    .form-control::placeholder {
+      color: #fff;
+      opacity: 1;
+    }
+        .form-control:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.2rem rgba(0, 198, 255, 0.25);
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      transform: translateY(-2px);
+    }
+    
+    .form-label {
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+      border: none;
+      padding: 15px;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 198, 255, 0.3);
+      width: 100%;
+    }
+    
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: all 0.6s ease;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 198, 255, 0.4);
+    }
+    
+    .btn-primary:hover::before {
+      left: 100%;
+    }
+    
+    .error-message {
+      color: var(--danger-color);
+      text-align: center;
+      margin-bottom: 20px;
+      padding: 12px;
+      background: rgba(255, 45, 117, 0.1);
+      border-radius: 10px;
+      border: 1px solid rgba(255, 45, 117, 0.3);
+      animation: errorPulse 2s infinite;
+    }
+    
+    @keyframes errorPulse {
+      0%, 100% {
+        box-shadow: 0 0 5px rgba(255, 45, 117, 0.3);
+      }
+      50% {
+        box-shadow: 0 0 15px rgba(255, 45, 117, 0.5);
+      }
+    }
+    
+    
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.9rem;
+      margin-top: 20px;
+    }
+    
+    .login-icon {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: iconGlow 3s infinite alternate;
+    }
+    
+    @keyframes iconGlow {
+      0% {
+        filter: drop-shadow(0 0 5px var(--primary-color));
+      }
+      100% {
+        filter: drop-shadow(0 0 15px var(--accent-color));
+      }
+    }
+    
+    /* .input-icon {
+      position: relative;
+    }
+    
+    .input-icon i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--primary-color);
+      z-index: 2;
+    }
+    
+    .input-icon .form-control {
+      padding-left: 45px;
+    }
+     */
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .login-container {
+        padding: 15px;
+      }
+      
+      .card-body {
+        padding: 20px;
+      }
+      
+      .face-recognition-animation {
+        width: 200px;
+        height: 200px;
+      }
+      
+      .face-circle:nth-child(3) {
+        width: 200px;
+        height: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated Background Pattern -->
+  <div class="background-pattern"></div>
+  
+  <!-- Animated Face Pattern Lines in Foreground -->
+  <div class="face-pattern-lines">
+    <div class="face-line"></div>
+    <div class="face-line"></div>
+    <div class="face-line"></div>
+    <div class="face-line"></div>
+    <div class="face-line"></div>
+    <div class="face-line"></div>
+    <div class="face-line"></div>
+    <div class="face-line"></div>
+  </div>
+  
+  <!-- Face Grid Animation -->
+  <div class="face-grid" id="faceGrid"></div>
+  
+  <!-- Face Recognition Animation -->
+  <div class="face-recognition-animation">
+    <div class="face-circle"></div>
+    <div class="face-circle"></div>
+    <div class="face-circle"></div>
+  </div>
+
+  <div class="login-container">
+    <div class="card">
+      <div class="card-header">
+        <div class="login-icon">
+          <i class="fas fa-user-shield"></i>
+        </div>
+        <h3>Admin Login</h3>
+      </div>
+      <div class="card-body">
+        {% if error %}
+          <p class="error-message">
+            <i class="fas fa-exclamation-triangle me-2"></i>{{ error }}
+          </p>
+        {% endif %}
+        <form method="POST" action="{{ url_for('do_login') }}">
+          <div class="mb-3 input-icon">
+            <!-- <i class="fas fa-user"></i> -->
+            <label for="username" class="form-label">Admin Email</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="Enter Your Email" required>
+          </div>
+          <div class="mb-3 input-icon" >
+            <!-- <i class="fas fa-lock"></i> -->
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" required>
+          </div>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-sign-in-alt me-2"></i> Login
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="footer">
+      <p>© 2025 Face Recognition Attendance System | developed by ET08</i></p>
+    </div>
+  </div>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Generate face grid cells
+   // ...existing code...
+  function generateFaceGrid() {
+  const grid = document.getElementById('faceGrid');
+  const cellSize = 50;
+  let cols = Math.ceil(window.innerWidth / cellSize);
+  let rows = Math.ceil(window.innerHeight / cellSize);
+
+  // Limit total cells for performance
+  const maxCells = 120; // adjust as needed
+  if (cols * rows > maxCells) {
+    const ratio = Math.sqrt(maxCells / (cols * rows));
+    cols = Math.max(2, Math.floor(cols * ratio));
+    rows = Math.max(2, Math.floor(rows * ratio));
+  }
+
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+      const cell = document.createElement('div');
+      cell.className = 'grid-cell';
+      cell.style.left = `${j * cellSize}px`;
+      cell.style.top = `${i * cellSize}px`;
+      cell.style.animationDelay = `${Math.random() * 4}s`;
+      grid.appendChild(cell);
+    }
+  }
+}
+// ...existing code...
+
+    // Initialize grid on page load
+    window.addEventListener('load', generateFaceGrid);
+
+    // Add focus effects to form inputs
+    document.addEventListener('DOMContentLoaded', function() {
+      const inputs = document.querySelectorAll('.form-control');
+      inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+          this.parentElement.classList.add('focused');
+        });
+        input.addEventListener('blur', function() {
+          this.parentElement.classList.remove('focused');
+        });
+      });
+    });
+  </script>
+</body>
+</html>

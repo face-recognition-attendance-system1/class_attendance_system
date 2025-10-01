@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notifications</title>
+  <link rel="icon" type="image/x-icon" href="../image/favicon/favicon.ico">
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #00c6ff;
+      --secondary-color: #0072ff;
+      --accent-color: #7e42ff;
+      --success-color: #00ff88;
+      --danger-color: #ff2d75;
+      --warning-color: #ffbd2e;
+      --info-color: #2ef0ff;
+      --light-bg: #0a1128;
+      --dark-text: #e0e0e0;
+      --card-bg: rgba(10, 17, 40, 0.7);
+    }
+
+    body {
+      background: linear-gradient(135deg, #050a1a, #0a1128);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--dark-text);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Animated Background Pattern */
+    .background-pattern {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.1;
+      background: 
+        radial-gradient(circle at 20% 30%, var(--primary-color) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, var(--accent-color) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, var(--info-color) 0%, transparent 50%);
+      background-size: 600px 600px;
+      animation: patternMove 30s infinite linear;
+    }
+    
+    @keyframes patternMove {
+      0% {
+        background-position: 0 0, 0 0, 0 0;
+      }
+      100% {
+        background-position: 600px 600px, -600px -600px, 300px -300px;
+      }
+    }
+    
+    /* Animated Face Pattern Lines in Foreground */
+    .face-pattern-lines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+    
+    .face-line {
+      position: absolute;
+      background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+      opacity: 0.1;
+      animation: lineScan 8s infinite linear;
+    }
+    
+    .face-line:nth-child(1) {
+      top: 20%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      animation-delay: 0s;
+    }
+    
+    .face-line:nth-child(2) {
+      top: 40%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      animation-delay: 2s;
+    }
+    
+    .face-line:nth-child(3) {
+      top: 60%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      animation-delay: 4s;
+    }
+    
+    .face-line:nth-child(4) {
+      top: 80%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      animation-delay: 6s;
+    }
+    
+    .face-line:nth-child(5) {
+      top: 0;
+      left: 20%;
+      width: 1px;
+      height: 100%;
+      animation-delay: 1s;
+    }
+    
+    .face-line:nth-child(6) {
+      top: 0;
+      left: 40%;
+      width: 1px;
+      height: 100%;
+      animation-delay: 3s;
+    }
+    
+    .face-line:nth-child(7) {
+      top: 0;
+      left: 60%;
+      width: 1px;
+      height: 100%;
+      animation-delay: 5s;
+    }
+    
+    .face-line:nth-child(8) {
+      top: 0;
+      left: 80%;
+      width: 1px;
+      height: 100%;
+      animation-delay: 7s;
+    }
+    
+    @keyframes lineScan {
+      0% {
+        opacity: 0.1;
+        transform: scaleX(0);
+      }
+      50% {
+        opacity: 0.3;
+        transform: scaleX(1);
+      }
+      100% {
+        opacity: 0.1;
+        transform: scaleX(0);
+      }
+    }
+    
+    /* Face Grid Animation */
+    .face-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.05;
+    }
+    
+    .grid-cell {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      border: 1px solid var(--primary-color);
+      animation: gridPulse 4s infinite ease-in-out;
+    }
+    
+    @keyframes gridPulse {
+      0%, 100% {
+        opacity: 0.1;
+        box-shadow: 0 0 5px var(--primary-color);
+      }
+      50% {
+        opacity: 0.3;
+        box-shadow: 0 0 15px var(--primary-color);
+      }
+    }
+    
+    /* Face Recognition Animation */
+    .face-recognition-animation {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      height: 300px;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.1;
+    }
+    
+    .face-circle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 2px solid var(--primary-color);
+      animation: faceScan 6s infinite ease-in-out;
+    }
+    
+    .face-circle:nth-child(1) {
+      width: 100px;
+      height: 100px;
+      animation-delay: 0s;
+    }
+    
+    .face-circle:nth-child(2) {
+      width: 200px;
+      height: 200px;
+      animation-delay: 2s;
+    }
+    
+    .face-circle:nth-child(3) {
+      width: 300px;
+      height: 300px;
+      animation-delay: 4s;
+    }
+    
+    @keyframes faceScan {
+      0%, 100% {
+        opacity: 0.1;
+        box-shadow: 0 0 10px var(--primary-color);
+      }
+      50% {
+        opacity: 0.3;
+        box-shadow: 0 0 30px var(--primary-color);
+      }
+    }
+
+   .main-container {
+    margin-left: 240px; /* shift content right to make space for vertical nav */
+  }
+  @media (max-width: 768px) {
+    nav.navbar {
+      width: 100vw;
+      height: auto;
+      position: static;
+      flex-direction: row;
+      padding-top: 10px;
+      border-right: none;
+      border-bottom: 1px solid rgba(0,198,255,0.2);
+    }
+    .main-container {
+      margin-left: 0;
+      margin-top: 80px;
+    }
+    .navbar-nav {
+      flex-direction: row !important;
+      width: 100%;
+      justify-content: space-around;
+    }
+    .nav-item {
+      margin-bottom: 0 !important;
+    }
+  }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      margin-bottom: 20px;
+      border: 1px solid rgba(0, 198, 255, 0.2);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    }
+
+    .card-header {
+      background: transparent;
+      color: white;
+      border-radius: 20px 20px 0 0 !important;
+      font-weight: 600;
+      border-bottom: 1px solid rgba(0, 198, 255, 0.2);
+      padding: 20px;
+    }
+
+    .card-body {
+      padding: 25px;
+    }
+
+    .table {
+      width: 100%;
+      margin-bottom: 0;
+      background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 15px;
+      overflow: hidden;
+      border: 1px solid rgba(0, 198, 255, 0.2);
+    }
+
+    .table th, .table td {
+      padding: 15px;
+      border: 1px solid rgba(0, 198, 255, 0.2);
+      text-align: left;
+      vertical-align: middle;
+      color: var(--dark-text);
+    }
+
+    .table th {
+      background-color: rgba(0, 0, 0, 0.5);
+      color: var(--primary-color);
+      font-weight: 600;
+      border-bottom: 2px solid rgba(0, 198, 255, 0.3);
+    }
+
+    .table tbody tr {
+      transition: all 0.3s ease;
+    }
+
+    .table tbody tr:hover {
+      background-color: rgba(0, 198, 255, 0.1);
+      transform: translateX(5px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+      border: none;
+      padding: 12px 30px;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 198, 255, 0.3);
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: all 0.6s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 198, 255, 0.4);
+    }
+
+    .btn-primary:hover::before {
+      left: 100%;
+    }
+
+    .btn-danger {
+      background: linear-gradient(90deg, var(--danger-color), #c0392b);
+      border: none;
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 3px 10px rgba(255, 45, 117, 0.3);
+    }
+
+    .btn-danger::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: all 0.6s ease;
+    }
+
+    .btn-danger:hover {
+      background: linear-gradient(90deg, #c0392b, var(--danger-color));
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 45, 117, 0.4);
+    }
+
+    .btn-danger:hover::before {
+      left: 100%;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 20px;
+      margin-top: 30px;
+      border-top: 1px solid rgba(0, 198, 255, 0.2);
+    }
+
+    .alert {
+      border-radius: 15px;
+      border: 1px solid rgba(0, 198, 255, 0.3);
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(10px);
+    }
+
+    .alert-success {
+      border-color: rgba(0, 255, 136, 0.3);
+      color: var(--success-color);
+    }
+
+    .alert-danger {
+      border-color: rgba(255, 45, 117, 0.3);
+      color: var(--danger-color);
+    }
+
+    .alert-warning {
+      border-color: rgba(255, 189, 46, 0.3);
+      color: var(--warning-color);
+    }
+
+    .alert-info {
+      border-color: rgba(46, 240, 255, 0.3);
+      color: var(--info-color);
+    }
+
+    .notification-header {
+      color: var(--warning-color);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid rgba(255, 189, 46, 0.3);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .main-container {
+        padding: 10px;
+      }
+      
+      .card-body {
+        padding: 15px;
+      }
+      
+      .table {
+        font-size: 0.9rem;
+      }
+      
+      .btn-danger, .btn-primary {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated Background Pattern -->
+  <div class="background-pattern"></div>
+  
+  <!-- Animated Face Pattern Lines in Foreground -->
+  <div class="face-pattern-lines">
+    <div class="face-line"></div>
+    <div class="face-line"></div>
+    <div class="face-line"></div>
+    <div class="face-line"></div>
+    <div class="face-line"></div>
+    <div class="face-line"></div>
+    <div class="face-line"></div>
+    <div class="face-line"></div>
+  </div>
+  
+  <!-- Face Grid Animation -->
+  <div class="face-grid" id="faceGrid"></div>
+  
+  <!-- Face Recognition Animation -->
+  <div class="face-recognition-animation">
+    <div class="face-circle"></div>
+    <div class="face-circle"></div>
+    <div class="face-circle"></div>
+  </div>
+
+  <!-- Navigation Bar -->
+<nav class="navbar navbar-dark"
+     style="height:100vh; width:220px; position:fixed; top:0; left:0; z-index:100; border-radius:0; border-right:1px solid rgba(0,198,255,0.2); background:rgba(10,17,40,0.95); display:flex; flex-direction:column; align-items:center; padding-top:30px; justify-content:space-between;">
+  <div style="width:100%; display:flex; flex-direction:column; align-items:center;">
+    <a class="navbar-brand mb-4" href="#" style="font-size:1.4rem;">
+      <i class="fas fa-camera-retro me-2"></i>
+      Home
+    </a>
+    <ul class="navbar-nav w-100" style="flex-direction:column; margin-top:0;">
+      <li class="nav-item mb-2">
+        <a class="nav-link" href="{{ url_for('home') }}"><i class="fas fa-home me-1"></i> Notifications</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link" href="{{ url_for('register_page') }}"><i class="fas fa-user-plus me-1"></i> Register</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link" href="{{ url_for('admin_register_page') }}"><i class="fas fa-user-shield me-1"></i> Admin Register</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link active" href="{{ url_for('attendance') }}"><i class="fas fa-chart-bar me-1"></i> Attendance</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link" href="#"><i class="fas fa-bell me-1"></i> Notifications</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link" href="{{ url_for('registered') }}"><i class="fas fa-users me-1"></i> Registered Staff</a>
+      </li>
+    </ul>
+  </div>
+  <div style="width:100%; display:flex; flex-direction:column; align-items:center; margin-bottom:30px;">
+    <ul class="navbar-nav w-100">
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt me-1"></i> Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+  <!-- Main Content -->
+  <div class="container main-container">
+    <div class="card">
+      <div class="card-header">
+        <i class="fas fa-bell me-2"></i> Notifications
+      </div>
+      <div class="card-body">
+
+        <!-- 🔔 Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="mt-3">
+              {% for category, msg in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                  <i class="fas fa-{{ 'check-circle' if category == 'success' else 'exclamation-triangle' if category == 'danger' else 'info-circle' if category == 'info' else 'exclamation-circle' }} me-2"></i>
+                  {{ msg }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="filter: brightness(0) invert(1);"></button>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <h4 class="notification-header">
+          <i class="fas fa-exclamation-triangle me-2"></i>Staff Absent for 3 or More Consecutive Days
+        </h4>
+        {% if absents %}
+          <table class="table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Department</th>
+                <th>Admin Name</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for s in absents %}
+              <tr>
+                <td>{{ s.student_id }}</td>
+                <td>{{ s.name }}</td>
+                <td>{{ s.email }}</td>
+                <td>{{ s.phone }}</td>
+                <td>{{ s.get('department', '') }}</td>
+                <td>{{ s.get('admin_name', 'Unknown') }}</td>
+                <td>
+                  <form action="{{ url_for('send_alert') }}" method="POST" style="display:inline;">
+                    <input type="hidden" name="email" value="{{ s.email }}">
+                    <input type="hidden" name="name" value="{{ s.name }}">
+                    <button type="submit" class="btn btn-danger btn-sm">
+                      <i class="fas fa-envelope me-1"></i> Send Alert
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <div class="text-center py-4">
+            <i class="fas fa-check-circle fa-3x mb-3" style="color: var(--success-color);"></i>
+            <p class="h5">No staff absent for 3 or more consecutive days.</p>
+            <p class="text-muted">All staff are currently attending regularly.</p>
+          </div>
+        {% endif %}
+
+        <a href="{{ url_for('home') }}" class="btn btn-primary mt-3">
+          <i class="fas fa-arrow-left me-2"></i> Back to Home
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>© 2025 Face Recognition Attendance System | Developed  by ET08  </p>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Generate face grid cells
+    function generateFaceGrid() {
+      const grid = document.getElementById('faceGrid');
+      const cellSize = 50;
+      const cols = Math.ceil(window.innerWidth / cellSize);
+      const rows = Math.ceil(window.innerHeight / cellSize);
+      
+      for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+          const cell = document.createElement('div');
+          cell.className = 'grid-cell';
+          cell.style.left = `${j * cellSize}px`;
+          cell.style.top = `${i * cellSize}px`;
+          cell.style.animationDelay = `${Math.random() * 4}s`;
+          grid.appendChild(cell);
+        }
+      }
+    }
+
+    // Initialize grid on page load
+    window.addEventListener('load', generateFaceGrid);
+  </script>
+</body>
+</html>

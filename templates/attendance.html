@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance Dashboard</title>
+  <link rel="icon" type="image/x-icon" href="../image/favicon/favicon.ico">
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #00c6ff;
+      --secondary-color: #0072ff;
+      --accent-color: #7e42ff;
+      --success-color: #00ff88;
+      --danger-color: #ff2d75;
+      --warning-color: #ffbd2e;
+      --info-color: #2ef0ff;
+      --light-bg: #0a1128;
+      --dark-text: #e0e0e0;
+      --card-bg: rgba(10, 17, 40, 0.7);
+    }
+
+    body {
+      background: linear-gradient(135deg, #050a1a, #0a1128);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--dark-text);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    .background-pattern {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.1;
+      background: 
+        radial-gradient(circle at 20% 30%, var(--primary-color) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, var(--accent-color) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, var(--info-color) 0%, transparent 50%);
+      background-size: 600px 600px;
+      animation: patternMove 30s infinite linear;
+    }
+
+    @keyframes patternMove {
+      0% { background-position: 0 0, 0 0, 0 0; }
+      100% { background-position: 600px 600px, -600px -600px, 300px -300px; }
+    }
+
+    .face-pattern-lines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .face-line {
+      position: absolute;
+      background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+      opacity: 0.1;
+      animation: lineScan 8s infinite linear;
+    }
+
+    .face-line:nth-child(1) { top: 20%; left: 0; width: 100%; height: 1px; animation-delay: 0s; }
+    .face-line:nth-child(2) { top: 40%; left: 0; width: 100%; height: 1px; animation-delay: 2s; }
+    .face-line:nth-child(3) { top: 60%; left: 0; width: 100%; height: 1px; animation-delay: 4s; }
+    .face-line:nth-child(4) { top: 80%; left: 0; width: 100%; height: 1px; animation-delay: 6s; }
+    .face-line:nth-child(5) { top: 0; left: 20%; width: 1px; height: 100%; animation-delay: 1s; }
+    .face-line:nth-child(6) { top: 0; left: 40%; width: 1px; height: 100%; animation-delay: 3s; }
+    .face-line:nth-child(7) { top: 0; left: 60%; width: 1px; height: 100%; animation-delay: 5s; }
+    .face-line:nth-child(8) { top: 0; left: 80%; width: 1px; height: 100%; animation-delay: 7s; }
+
+    @keyframes lineScan {
+      0% { opacity: 0.1; transform: scaleX(0); }
+      50% { opacity: 0.3; transform: scaleX(1); }
+      100% { opacity: 0.1; transform: scaleX(0); }
+    }
+
+    .face-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.05;
+    }
+
+    .grid-cell {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      border: 1px solid var(--primary-color);
+      animation: gridPulse 4s infinite ease-in-out;
+    }
+
+    @keyframes gridPulse {
+      0%, 100% { opacity: 0.1; box-shadow: 0 0 5px var(--primary-color); }
+      50% { opacity: 0.3; box-shadow: 0 0 15px var(--primary-color); }
+    }
+
+    .face-recognition-animation {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      height: 300px;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.1;
+    }
+
+    .face-circle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 2px solid var(--primary-color);
+      animation: faceScan 6s infinite ease-in-out;
+    }
+
+    .face-circle:nth-child(1) { width: 100px; height: 100px; animation-delay: 0s; }
+    .face-circle:nth-child(2) { width: 200px; height: 200px; animation-delay: 2s; }
+    .face-circle:nth-child(3) { width: 300px; height: 300px; animation-delay: 4s; }
+
+    @keyframes faceScan {
+      0%, 100% { opacity: 0.1; box-shadow: 0 0 10px var(--primary-color); }
+      50% { opacity: 0.3; box-shadow: 0 0 30px var(--primary-color); }
+    }
+
+      .main-container {
+    margin-left: px; /* shift content right to make space for vertical nav */
+  }
+    @media (max-width: 768px) {
+    nav.navbar {
+      width: 100vw;
+      height: auto;
+      position: static;
+      flex-direction: row;
+      padding-top: 10px;
+      border-right: none;
+      text-align: top;
+      border-bottom: 1px solid rgba(0,198,255,0.2);
+    }
+    .main-container {
+      margin-left: 0;
+      margin-top: 80px;
+    }
+    .navbar-nav {
+      flex-direction: row !important;
+      width: 100%;
+      justify-content: space-around;
+    }
+    .nav-item {
+      margin-bottom: 0 !important;
+    }
+  }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      margin-bottom: 20px;
+      border: 1px solid rgba(0, 198, 255, 0.2);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    }
+
+    .card-header {
+      background: transparent;
+      color: white;
+      border-radius: 20px 20px 0 0 !important;
+      font-weight: 600;
+      border-bottom: 1px solid rgba(0, 198, 255, 0.2);
+      padding: 20px;
+    }
+
+    .card-body {
+      padding: 25px;
+    }
+
+    .video-container {
+      position: relative;
+      overflow: hidden;
+      border-radius: 15px;
+      background-color: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(0, 198, 255, 0.3);
+      min-height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .video-container img {
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      height: auto;
+    }
+
+    .video-error {
+      color: var(--danger-color);
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .table {
+      width: 100%;
+      margin-bottom: 0;
+      background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 15px;
+      overflow: hidden;
+      border: 1px solid rgba(0, 198, 255, 0.2);
+    }
+
+    .table th, .table td {
+      padding: 15px;
+      border: 1px solid rgba(0, 198, 255, 0.2);
+      text-align: left;
+      vertical-align: middle;
+      color: var(--dark-text);
+    }
+
+    .table th {
+      background-color: rgba(0, 0, 0, 0.5);
+      color: var(--primary-color);
+      font-weight: 600;
+      border-bottom: 2px solid rgba(0, 198, 255, 0.3);
+    }
+
+    .table tbody tr {
+      transition: all 0.3s ease;
+    }
+
+    .table tbody tr:hover {
+      background-color: rgba(0, 198, 255, 0.1);
+      transform: translateX(5px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+      border: none;
+      padding: 12px 30px;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 198, 255, 0.3);
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: all 0.6s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 198, 255, 0.4);
+    }
+
+    .btn-primary:hover::before {
+      left: 100%;
+    }
+
+    .form-select {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(0, 198, 255, 0.3);
+      border-radius: 10px;
+      padding: 12px 15px;
+      margin-bottom: 15px;
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    .form-select:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.2rem rgba(0, 198, 255, 0.25);
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+    }
+
+    .form-label {
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 20px;
+      margin-top: 30px;
+      border-top: 1px solid rgba(0, 198, 255, 0.2);
+    }
+
+    .stats-container {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      border: 1px solid rgba(0, 198, 255, 0.2);
+      flex: 1;
+      margin: 0 10px;
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 198, 255, 0.2);
+    }
+
+    .stat-card h3 {
+      font-size: 2.5rem;
+      margin: 10px 0;
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stat-card.total {
+      border-top: 4px solid var(--primary-color);
+    }
+
+    .stat-card.present {
+      border-top: 4px solid var(--success-color);
+    }
+
+    .stat-card.late {
+      border-top: 4px solid var(--warning-color);
+    }
+
+    .stat-card.absent {
+      border-top: 4px solid var(--danger-color);
+    }
+
+    .live-indicator {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(255, 45, 117, 0.2);
+      padding: 5px 15px;
+      border-radius: 20px;
+      margin-bottom: 15px;
+      border: 1px solid rgba(255, 45, 117, 0.3);
+    }
+
+    .live-dot {
+      width: 10px;
+      height: 10px;
+      background-color: var(--danger-color);
+      border-radius: 50%;
+      margin-right: 8px;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; box-shadow: 0 0 0 0 rgba(255, 45, 117, 0.7); }
+      70% { opacity: 0.7; box-shadow: 0 0 0 10px rgba(255, 45, 117, 0); }
+      100% { opacity: 1; box-shadow: 0 0 0 0 rgba(255, 45, 117, 0); }
+    }
+
+    .loading-indicator {
+      text-align: center;
+      color: var(--primary-color);
+      font-weight: 500;
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .main-container { padding: 10px; }
+      .card-body { padding: 15px; }
+      .stats-container { flex-direction: column; }
+      .stat-card { margin: 10px 0; }
+      .face-recognition-animation { width: 200px; height: 200px; }
+      .face-circle:nth-child(3) { width: 200px; height: 200px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated Background Pattern -->
+  <div class="background-pattern"></div>
+
+  <!-- Animated Face Pattern Lines -->
+  <div class="face-pattern-lines">
+    <div class="face-line"></div>
+    <div class="face-line"></div>
+    <div class="face-line"></div>
+    <div class="face-line"></div>
+    <div class="face-line"></div>
+    <div class="face-line"></div>
+    <div class="face-line"></div>
+    <div class="face-line"></div>
+  </div>
+
+  <!-- Face Grid Animation -->
+  <div class="face-grid" id="faceGrid"></div>
+
+  <!-- Face Recognition Animation -->
+  <div class="face-recognition-animation">
+    <div class="face-circle"></div>
+    <div class="face-circle"></div>
+    <div class="face-circle"></div>
+  </div>
+
+  <!-- Navigation Bar -->
+ <!-- ...replace the <nav> block with the following... -->
+<nav class="navbar navbar-dark"
+     style="height:100vh; width:220px; position:fixed; top:0; left:0; z-index:100; border-radius:0; border-right:1px solid rgba(0,198,255,0.2); background:rgba(10,17,40,0.95); display:flex; flex-direction:column; align-items:center; padding-top:30px; justify-content:space-between;">
+  <div style="width:100%; display:flex; flex-direction:column; align-items:center;">
+    <a class="navbar-brand mb-4" href="#" style="font-size:1.4rem;">
+      <i class="fas fa-camera-retro me-2"></i>
+      Attendance
+    </a>
+    <ul class="navbar-nav w-100" style="flex-direction:column; margin-top:0;">
+      <li class="nav-item mb-2">
+        <a class="nav-link" href="{{ url_for('home') }}"><i class="fas fa-home me-1"></i> Home</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link" href="{{ url_for('register_page') }}"><i class="fas fa-user-plus me-1"></i> Register</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link" href="{{ url_for('admin_register_page') }}"><i class="fas fa-user-shield me-1"></i> Admin Register</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link active" href="#"><i class="fas fa-chart-bar me-1"></i> Attendance</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link" href="{{ url_for('notifications') }}"><i class="fas fa-bell me-1"></i> Notifications</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link" href="{{ url_for('registered') }}"><i class="fas fa-users me-1"></i> Registered Staff</a>
+      </li>
+    </ul>
+  </div>
+  <div style="width:100%; display:flex; flex-direction:column; align-items:center; margin-bottom:30px;">
+    <ul class="navbar-nav w-100">
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt me-1"></i> Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<!-- ...existing code... -->
+
+  <!-- Main Content -->
+  <div class="container main-container">
+    <!-- Stats Cards -->
+    <div class="stats-container">
+      <div class="stat-card total">
+        <i class="fas fa-users fa-2x" style="color: var(--primary-color);"></i>
+        <h3 id="total-staff">{{ (present|length) + (late|length) + (absent|length) }}</h3>
+        <p>Total Staff</p>
+      </div>
+      <div class="stat-card present">
+        <i class="fas fa-user-check fa-2x" style="color: var(--success-color);"></i>
+        <h3 id="present-today">{{ present|length }}</h3>
+        <p>Present Today</p>
+      </div>
+      <div class="stat-card late">
+        <i class="fas fa-clock fa-2x" style="color: var(--warning-color);"></i>
+        <h3 id="late-today">{{ late|length }}</h3>
+        <p>Late Today</p>
+      </div>
+      <div class="stat-card absent">
+        <i class="fas fa-user-times fa-2x" style="color: var(--danger-color);"></i>
+        <h3 id="absent-today">{{ absent|length }}</h3>
+        <p>Absent Today</p>
+      </div>
+    </div>
+
+    <!-- Live Stream -->
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <i class="fas fa-video me-2"></i> Live ESP32 Camera Feed
+          </div>
+          <div class="card-body">
+            <div class="live-indicator">
+              <span class="live-dot"></span>
+              <span>LIVE STREAMING</span>
+            </div>
+            <div class="video-container">
+              <img id="video-feed" src="{{ url_for('video_feed') }}" width="100%" class="img-fluid" alt="Live ESP32 Stream">
+              <div id="video-error" class="video-error" style="display: none;">
+                Unable to load ESP32 camera feed. Please check the camera connection.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Attendance Records -->
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <i class="fas fa-chart-bar me-2"></i> Attendance Records
+          </div>
+          <div class="card-body">
+            <form method="POST" action="{{ url_for('attendance') }}" id="date-filter-form">
+              <div class="row mb-3">
+                <div class="col-md-4">
+                  <label for="year" class="form-label">Year</label>
+                  <select class="form-select" id="year" name="year">
+                    {% for year in years %}
+                      <option value="{{ year }}" {% if year == selected_year %}selected{% endif %}>{{ year }}</option>
+                    {% endfor %}
+                    {% if not years %}
+                      <option value="{{ selected_year }}" selected>{{ selected_year }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label for="month" class="form-label">Month</label>
+                  <select class="form-select" id="month" name="month">
+                    {% for month in months.get(selected_year, []) %}
+                      <option value="{{ month }}" {% if month == selected_month %}selected{% endif %}>{{ month }}</option>
+                    {% endfor %}
+                    {% if not months.get(selected_year, []) %}
+                      <option value="{{ selected_month }}" selected>{{ selected_month }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label for="day" class="form-label">Day</label>
+                  <select class="form-select" id="day" name="day">
+                    {% for day in range(1, 32) %}
+                      <option value="{{ day }}" {% if day == selected_day %}selected{% endif %}>{{ day }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary"><i class="fas fa-filter me-2"></i> Filter</button>
+            </form>
+
+            <div id="loading-indicator" class="loading-indicator">
+              <i class="fas fa-spinner fa-spin me-2"></i> Updating attendance data...
+            </div>
+
+            <h4 class="mt-4" style="color: var(--success-color);">Present Staff</h4>
+            <div id="present-table-container">
+              {% if present %}
+                <table class="table" id="present-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Phone</th>
+                      <th>Department</th>
+                      <th>Timestamp</th>
+                      <th>Admin Name</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for s in present %}
+                      <tr>
+                        <td>{{ s.student_id }}</td>
+                        <td>{{ s.name }}</td>
+                        <td>{{ s.email }}</td>
+                        <td>{{ s.phone }}</td>
+                        <td>{{ s.get('department', '') }}</td>
+                        <td>{{ s.get('timestamp', '')|datetimeformat }}</td>
+                        <td>{{ s.get('admin_name', 'Unknown') }}</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              {% else %}
+                <p>No staff present on this date.</p>
+              {% endif %}
+            </div>
+
+            <h4 class="mt-4" style="color: var(--warning-color);">Late Comers</h4>
+            <div id="late-table-container">
+              {% if late %}
+                <table class="table" id="late-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Phone</th>
+                      <th>Department</th>
+                      <th>Timestamp</th>
+                      <th>Admin Name</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for s in late %}
+                      <tr>
+                        <td>{{ s.student_id }}</td>
+                        <td>{{ s.name }}</td>
+                        <td>{{ s.email }}</td>
+                        <td>{{ s.phone }}</td>
+                        <td>{{ s.get('department', '') }}</td>
+                        <td>{{ s.get('timestamp', '')|datetimeformat }}</td>
+                        <td>{{ s.get('admin_name', 'Unknown') }}</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              {% else %}
+                <p>No staff late on this date.</p>
+              {% endif %}
+            </div>
+
+            <h4 class="mt-4" style="color: var(--danger-color);">Absent Staff</h4>
+            <div id="absent-table-container">
+              {% if absent %}
+                <table class="table" id="absent-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Phone</th>
+                      <th>Department</th>
+                      <th>Admin Name</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for s in absent %}
+                      <tr>
+                        <td>{{ s.student_id }}</td>
+                        <td>{{ s.name }}</td>
+                        <td>{{ s.email }}</td>
+                        <td>{{ s.phone }}</td>
+                        <td>{{ s.get('department', '') }}</td>
+                        <td>{{ s.get('admin_name', 'Unknown') }}</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              {% else %}
+                <p>No staff absent on this date.</p>
+              {% endif %}
+            </div>
+
+            <a href="{{ url_for('home') }}" class="btn btn-primary mt-3">
+              <i class="fas fa-arrow-left me-2"></i> Back to Home
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+    <div class="footer">
+      <p>© 2025 Face Recognition Attendance System | developed by ET08</i></p>
+    </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Generate face grid cells
+    function generateFaceGrid() {
+      const grid = document.getElementById('faceGrid');
+      grid.innerHTML = ''; // Clear existing grid
+      const cellSize = 50;
+      const cols = Math.ceil(window.innerWidth / cellSize);
+      const rows = Math.ceil(window.innerHeight / cellSize);
+      
+      for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+          const cell = document.createElement('div');
+          cell.className = 'grid-cell';
+          cell.style.left = `${j * cellSize}px`;
+          cell.style.top = `${i * cellSize}px`;
+          cell.style.animationDelay = `${Math.random() * 4}s`;
+          grid.appendChild(cell);
+        }
+      }
+    }
+
+    // Format ISO timestamp to readable format
+    function formatDateTime(isoString) {
+      if (!isoString) return '';
+      const date = new Date(isoString);
+      return date.toLocaleString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+    }
+
+    // Update attendance tables and stats
+    function updateAttendance() {
+      const year = document.getElementById('year').value;
+      const month = document.getElementById('month').value;
+      const day = document.getElementById('day').value;
+      const loadingIndicator = document.getElementById('loading-indicator');
+      
+      loadingIndicator.style.display = 'block';
+      
+      fetch(`/attendance_data?year=${year}&month=${month}&day=${day}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          // Update stats
+          document.getElementById('total-staff').textContent = data.stats.total_registered;
+          document.getElementById('present-today').textContent = data.stats.present_today;
+          document.getElementById('late-today').textContent = data.stats.late_today;
+          document.getElementById('absent-today').textContent = data.stats.absent_today;
+
+          // Update present table
+          const presentTableContainer = document.getElementById('present-table-container');
+          if (data.present.length > 0) {
+            let table = `
+              <table class="table" id="present-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Department</th>
+                    <th>Timestamp</th>
+                    <th>Admin Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+            `;
+            data.present.forEach(s => {
+              table += `
+                <tr>
+                  <td>${s.student_id}</td>
+                  <td>${s.name}</td>
+                  <td>${s.email}</td>
+                  <td>${s.phone}</td>
+                  <td>${s.department || ''}</td>
+                  <td>${formatDateTime(s.timestamp)}</td>
+                  <td>${s.admin_name || 'Unknown'}</td>
+                </tr>
+              `;
+            });
+            table += `</tbody></table>`;
+            presentTableContainer.innerHTML = table;
+          } else {
+            presentTableContainer.innerHTML = '<p>No staff present on this date.</p>';
+          }
+
+          // Update late table
+          const lateTableContainer = document.getElementById('late-table-container');
+          if (data.late.length > 0) {
+            let table = `
+              <table class="table" id="late-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Department</th>
+                    <th>Timestamp</th>
+                    <th>Admin Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+            `;
+            data.late.forEach(s => {
+              table += `
+                <tr>
+                  <td>${s.student_id}</td>
+                  <td>${s.name}</td>
+                  <td>${s.email}</td>
+                  <td>${s.phone}</td>
+                  <td>${s.department || ''}</td>
+                  <td>${formatDateTime(s.timestamp)}</td>
+                  <td>${s.admin_name || 'Unknown'}</td>
+                </tr>
+              `;
+            });
+            table += `</tbody></table>`;
+            lateTableContainer.innerHTML = table;
+          } else {
+            lateTableContainer.innerHTML = '<p>No staff late on this date.</p>';
+          }
+
+          // Update absent table
+          const absentTableContainer = document.getElementById('absent-table-container');
+          if (data.absent.length > 0) {
+            let table = `
+              <table class="table" id="absent-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Department</th>
+                    <th>Admin Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+            `;
+            data.absent.forEach(s => {
+              table += `
+                <tr>
+                  <td>${s.student_id}</td>
+                  <td>${s.name}</td>
+                  <td>${s.email}</td>
+                  <td>${s.phone}</td>
+                  <td>${s.department || ''}</td>
+                  <td>${s.admin_name || 'Unknown'}</td>
+                </tr>
+              `;
+            });
+            table += `</tbody></table>`;
+            absentTableContainer.innerHTML = table;
+          } else {
+            absentTableContainer.innerHTML = '<p>No staff absent on this date.</p>';
+          }
+
+          loadingIndicator.style.display = 'none';
+        })
+        .catch(error => {
+          console.error('Error fetching attendance data:', error);
+          loadingIndicator.style.display = 'none';
+          alert('Failed to update attendance data. Please check your connection and try again.');
+        });
+    }
+
+    // Initialize page
+    window.onload = function() {
+      generateFaceGrid();
+      const form = document.getElementById('date-filter-form');
+      form.addEventListener('change', updateAttendance);
+
+      // Periodically check video feed status
+      const videoFeed = document.getElementById('video-feed');
+      const videoError = document.getElementById('video-error');
+      videoFeed.onerror = function() {
+        videoFeed.style.display = 'none';
+        videoError.style.display = 'block';
+      };
+      videoFeed.onload = function() {
+        videoFeed.style.display = 'block';
+        videoError.style.display = 'none';
+      };
+
+      // Poll attendance data every 5 seconds for real-time updates
+      updateAttendance(); // Initial fetch
+      setInterval(updateAttendance, 5000); // Poll every 5 seconds
+    };
+
+    // Handle window resize to regenerate face grid
+    window.onresize = function() {
+      generateFaceGrid();
+    };
+  </script>
+</body>
+</html>

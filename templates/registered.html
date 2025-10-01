@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registered Staffs</title>
+  <link rel="icon" type="image/x-icon" href="../image/favicon/favicon.ico">
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #00c6ff;
+      --secondary-color: #0072ff;
+      --accent-color: #7e42ff;
+      --success-color: #00ff88;
+      --danger-color: #ff2d75;
+      --warning-color: #ffbd2e;
+      --info-color: #2ef0ff;
+      --light-bg: #0a1128;
+      --dark-text: #e0e0e0;
+      --card-bg: rgba(10, 17, 40, 0.7);
+    }
+
+    body {
+      background: linear-gradient(135deg, #050a1a, #0a1128);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--dark-text);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Animated Background Pattern */
+    .background-pattern {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.1;
+      background: 
+        radial-gradient(circle at 20% 30%, var(--primary-color) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, var(--accent-color) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, var(--info-color) 0%, transparent 50%);
+      background-size: 600px 600px;
+      animation: patternMove 30s infinite linear;
+    }
+    
+    @keyframes patternMove {
+      0% {
+        background-position: 0 0, 0 0, 0 0;
+      }
+      100% {
+        background-position: 600px 600px, -600px -600px, 300px -300px;
+      }
+    }
+    
+    /* Animated Face Pattern Lines in Foreground */
+    .face-pattern-lines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+    
+    .face-line {
+      position: absolute;
+      background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+      opacity: 0.1;
+      animation: lineScan 8s infinite linear;
+    }
+    
+    .face-line:nth-child(1) {
+      top: 20%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      animation-delay: 0s;
+    }
+    
+    .face-line:nth-child(2) {
+      top: 40%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      animation-delay: 2s;
+    }
+    
+    .face-line:nth-child(3) {
+      top: 60%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      animation-delay: 4s;
+    }
+    
+    .face-line:nth-child(4) {
+      top: 80%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      animation-delay: 6s;
+    }
+    
+    .face-line:nth-child(5) {
+      top: 0;
+      left: 20%;
+      width: 1px;
+      height: 100%;
+      animation-delay: 1s;
+    }
+    
+    .face-line:nth-child(6) {
+      top: 0;
+      left: 40%;
+      width: 1px;
+      height: 100%;
+      animation-delay: 3s;
+    }
+    
+    .face-line:nth-child(7) {
+      top: 0;
+      left: 60%;
+      width: 1px;
+      height: 100%;
+      animation-delay: 5s;
+    }
+    
+    .face-line:nth-child(8) {
+      top: 0;
+      left: 80%;
+      width: 1px;
+      height: 100%;
+      animation-delay: 7s;
+    }
+    
+    @keyframes lineScan {
+      0% {
+        opacity: 0.1;
+        transform: scaleX(0);
+      }
+      50% {
+        opacity: 0.3;
+        transform: scaleX(1);
+      }
+      100% {
+        opacity: 0.1;
+        transform: scaleX(0);
+      }
+    }
+    
+    /* Face Grid Animation */
+    .face-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.05;
+    }
+    
+    .grid-cell {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      border: 1px solid var(--primary-color);
+      animation: gridPulse 4s infinite ease-in-out;
+    }
+    
+    @keyframes gridPulse {
+      0%, 100% {
+        opacity: 0.1;
+        box-shadow: 0 0 5px var(--primary-color);
+      }
+      50% {
+        opacity: 0.3;
+        box-shadow: 0 0 15px var(--primary-color);
+      }
+    }
+    
+    /* Face Recognition Animation */
+    .face-recognition-animation {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      height: 300px;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.1;
+    }
+    
+    .face-circle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 2px solid var(--primary-color);
+      animation: faceScan 6s infinite ease-in-out;
+    }
+    
+    .face-circle:nth-child(1) {
+      width: 100px;
+      height: 100px;
+      animation-delay: 0s;
+    }
+    
+    .face-circle:nth-child(2) {
+      width: 200px;
+      height: 200px;
+      animation-delay: 2s;
+    }
+    
+    .face-circle:nth-child(3) {
+      width: 300px;
+      height: 300px;
+      animation-delay: 4s;
+    }
+    
+    @keyframes faceScan {
+      0%, 100% {
+        opacity: 0.1;
+        box-shadow: 0 0 10px var(--primary-color);
+      }
+      50% {
+        opacity: 0.3;
+        box-shadow: 0 0 30px var(--primary-color);
+      }
+    }
+
+    .main-container {
+    margin-left: 240px; /* shift content right to make space for vertical nav */
+    }
+  @media (max-width: 768px) {
+    nav.navbar {
+      width: 100vw;
+      height: auto;
+      position: static;
+      flex-direction: row;
+      padding-top: 10px;
+      border-right: none;
+      border-bottom: 1px solid rgba(0,198,255,0.2);
+    }
+    .main-container {
+      margin-left: 0;
+      margin-top: 80px;
+    }
+    .navbar-nav {
+      flex-direction: row !important;
+      width: 100%;
+      justify-content: space-around;
+    }
+    .nav-item {
+      margin-bottom: 0 !important;
+    }
+  }
+
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      margin-bottom: 20px;
+      border: 1px solid rgba(0, 198, 255, 0.2);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    }
+
+    .card-header {
+      background: transparent;
+      color: white;
+      border-radius: 20px 20px 0 0 !important;
+      font-weight: 600;
+      border-bottom: 1px solid rgba(0, 198, 255, 0.2);
+      padding: 20px;
+    }
+
+    .card-body {
+      padding: 25px;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: rgba(255, 255, 255, 0.5);
+       font-size: 20px;
+      margin-top: 30px;
+      border-top: 1px solid rgba(0, 198, 255, 0.2);
+    }
+
+    /* Accordion Styling */
+    .accordion {
+      --bs-accordion-bg: transparent;
+      --bs-accordion-border-color: rgba(0, 198, 255, 0.2);
+      --bs-accordion-btn-color: rgba(255, 255, 255, 0.9);
+      --bs-accordion-btn-bg: rgba(0, 0, 0, 0.3);
+      --bs-accordion-active-bg: rgba(0, 198, 255, 0.1);
+      --bs-accordion-active-color: var(--primary-color);
+    }
+
+    .accordion-button {
+      border-radius: 10px !important;
+      margin-bottom: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .accordion-button:not(.collapsed) {
+      box-shadow: 0 0 15px rgba(0, 198, 255, 0.2);
+      border: 1px solid rgba(0, 198, 255, 0.3);
+    }
+
+    .accordion-button:hover {
+      background: rgba(0, 198, 255, 0.15);
+    }
+
+    .table {
+      width: 100%;
+      margin-bottom: 0;
+      background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 15px;
+      overflow: hidden;
+      border: 1px solid rgba(0, 198, 255, 0.2);
+    }
+
+    .table th, .table td {
+      padding: 15px;
+      border: 1px solid rgba(0, 198, 255, 0.2);
+      text-align: left;
+      vertical-align: middle;
+      color: var(--dark-text);
+    }
+
+    .table th {
+      background-color: rgba(0, 0, 0, 0.5);
+      color: var(--primary-color);
+      font-weight: 600;
+      border-bottom: 2px solid rgba(0, 198, 255, 0.3);
+    }
+
+    .table tbody tr {
+      transition: all 0.3s ease;
+    }
+
+    .table tbody tr:hover {
+      background-color: rgba(0, 198, 255, 0.1);
+      transform: translateX(5px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+      border: none;
+      padding: 12px 30px;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 198, 255, 0.3);
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: all 0.6s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 198, 255, 0.4);
+    }
+
+    .btn-primary:hover::before {
+      left: 100%;
+    }
+
+    .btn-danger {
+      background: linear-gradient(90deg, var(--danger-color), #c0392b);
+      border: none;
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 3px 10px rgba(255, 45, 117, 0.3);
+    }
+
+    .btn-danger::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: all 0.6s ease;
+    }
+
+    .btn-danger:hover {
+      background: linear-gradient(90deg, #c0392b, var(--danger-color));
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 45, 117, 0.4);
+    }
+
+    .btn-danger:hover::before {
+      left: 100%;
+    }
+
+    .btn-delete {
+      background: linear-gradient(90deg, #ff6b6b, #ee5a24);
+      border: none;
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 3px 10px rgba(255, 107, 107, 0.3);
+    }
+
+    .btn-delete::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: all 0.6s ease;
+    }
+
+    .btn-delete:hover {
+      background: linear-gradient(90deg, #ee5a24, #ff6b6b);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+    }
+
+    .btn-delete:hover::before {
+      left: 100%;
+    }
+
+    /* Modal Styling */
+    .modal-content {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      border: 1px solid rgba(0, 198, 255, 0.2);
+      color: var(--dark-text);
+    }
+
+    .modal-header {
+      border-bottom: 1px solid rgba(0, 198, 255, 0.2);
+    }
+
+    .modal-footer {
+      border-top: 1px solid rgba(0, 198, 255, 0.2);
+    }
+
+    .form-control {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(0, 198, 255, 0.3);
+      border-radius: 10px;
+      padding: 12px 15px;
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.2rem rgba(0, 198, 255, 0.25);
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+    }
+
+    .btn-close {
+      filter: brightness(0) invert(1);
+    }
+
+    /* Success Modal Specific */
+    #successModal .modal-content {
+      background: rgba(0, 255, 136, 0.1);
+      border: 1px solid rgba(0, 255, 136, 0.3);
+    }
+
+    #successModal .modal-body {
+      color: var(--success-color);
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    /* Delete Modal Specific */
+    #deleteModal .modal-content {
+      background: rgba(255, 107, 107, 0.1);
+      border: 1px solid rgba(255, 107, 107, 0.3);
+    }
+
+    #deleteModal .modal-header {
+      border-bottom: 1px solid rgba(255, 107, 107, 0.3);
+    }
+
+    #deleteModal .modal-body {
+      color: #ff6b6b;
+    }
+
+    /* Department Icons */
+    .department-icon {
+      width: 30px;
+      height: 30px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      margin-right: 10px;
+      background: rgba(0, 198, 255, 0.2);
+    }
+
+    /* Action Buttons Container */
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .main-container {
+        padding: 10px;
+      }
+      
+      .card-body {
+        padding: 15px;
+      }
+      
+      .table {
+        font-size: 0.9rem;
+      }
+      
+      .btn-danger, .btn-primary, .btn-delete {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated Background Pattern -->
+  <div class="background-pattern"></div>
+  
+  <!-- Animated Face Pattern Lines in Foreground -->
+  <div class="face-pattern-lines">
+    <div class="face-line"></div>
+    <div class="face-line"></div>
+    <div class="face-line"></div>
+    <div class="face-line"></div>
+    <div class="face-line"></div>
+    <div class="face-line"></div>
+    <div class="face-line"></div>
+    <div class="face-line"></div>
+  </div>
+  
+  <!-- Face Grid Animation -->
+  <div class="face-grid" id="faceGrid"></div>
+  
+  <!-- Face Recognition Animation -->
+  <div class="face-recognition-animation">
+    <div class="face-circle"></div>
+    <div class="face-circle"></div>
+    <div class="face-circle"></div>
+  </div>
+
+  <!-- Navigation Bar -->
+<nav class="navbar navbar-dark"
+     style="height:100vh; width:220px; position:fixed; top:0; left:0; z-index:100; border-radius:0; border-right:1px solid rgba(0,198,255,0.2); background:rgba(10,17,40,0.95); display:flex; flex-direction:column; align-items:center; padding-top:30px; justify-content:space-between;">
+  <div style="width:100%; display:flex; flex-direction:column; align-items:center;">
+    <a class="navbar-brand mb-4" href="#" style="font-size:1.4rem;">
+      <i class="fas fa-camera-retro me-2"></i>
+      Home
+    </a>
+    <ul class="navbar-nav w-100" style="flex-direction:column; margin-top:0;">
+      <li class="nav-item mb-2">
+        <a class="nav-link" href="{{ url_for('home') }}"><i class="fas fa-home me-1"></i> Notifications</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link" href="{{ url_for('register_page') }}"><i class="fas fa-user-plus me-1"></i> Register</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link" href="{{ url_for('admin_register_page') }}"><i class="fas fa-user-shield me-1"></i> Admin Register</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link active" href="{{ url_for('attendance') }}"><i class="fas fa-chart-bar me-1"></i> Attendance</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link" href="{{url_for('notifications')}}"><i class="fas fa-bell me-1"></i> Notifications</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link" href="#"><i class="fas fa-users me-1"></i> Registered Staff</a>
+      </li>
+    </ul>
+  </div>
+  <div style="width:100%; display:flex; flex-direction:column; align-items:center; margin-bottom:30px;">
+    <ul class="navbar-nav w-100">
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt me-1"></i> Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+  <!-- Main Content -->
+  <div class="container main-container">
+    <div class="card">
+      <div class="card-header">
+        <i class="fas fa-users me-2"></i> Registered Staffs
+      </div>
+      <div class="card-body">
+        <!-- Accordion for Department Sections -->
+        <div class="accordion" id="departmentAccordion">
+          {% set departments = ['Admin', 'HR', 'Director', 'Janitor', 'Guard'] %}
+          {% for dept in departments %}
+            {% set dept_staff = students | selectattr('department', 'equalto', dept) | list %}
+            {% if dept_staff %}
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading{{ dept }}">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ dept }}" aria-expanded="false" aria-controls="collapse{{ dept }}">
+                    <span class="department-icon">
+                      <i class="fas fa-{{ 'user-shield' if dept == 'Admin' else 'user-tie' if dept == 'HR' else 'crown' if dept == 'Director' else 'broom' if dept == 'Janitor' else 'shield-alt' }}"></i>
+                    </span>
+                    {{ dept }} Staff ({{ dept_staff | length }})
+                  </button>
+                </h2>
+                <div id="collapse{{ dept }}" class="accordion-collapse collapse" aria-labelledby="heading{{ dept }}" data-bs-parent="#departmentAccordion">
+                  <div class="accordion-body">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Name</th>
+                          <th>Email</th>
+                          <th>Phone</th>
+                          <th>Department</th>
+                          <th>Timestamp</th>
+                          <th>Admin Name</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for s in dept_staff %}
+                          <tr>
+                            <td>{{ s.student_id | default('Unknown') }}</td>
+                            <td>{{ s.name | default('Unknown') }}</td>
+                            <td>{{ s.email | default('') }}</td>
+                            <td>{{ s.phone | default('') }}</td>
+                            <td>{{ s.department | default('') }}</td>
+                            <td>{{ s.timestamp | datetimeformat | default('') }}</td>
+                            <td>{{ s.admin_name | default('Unknown') }}</td>
+                            <td>
+                              <div class="action-buttons">
+                                <button class="btn btn-danger btn-sm fire-btn" data-student-id="{{ s.student_id }}">
+                                  <i class="fas fa-user-slash me-1"></i> Fire
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+
+          <!-- Others Section -->
+          {% set others = students | rejectattr('department', 'in', departments) | list %}
+          {% if others %}
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingOthers">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOthers" aria-expanded="false" aria-controls="collapseOthers">
+                  <span class="department-icon">
+                    <i class="fas fa-users"></i>
+                  </span>
+                  Others ({{ others | length }})
+                </button>
+              </h2>
+              <div id="collapseOthers" class="accordion-collapse collapse" aria-labelledby="headingOthers" data-bs-parent="#departmentAccordion">
+                <div class="accordion-body">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Department</th>
+                        <th>Timestamp</th>
+                        <th>Admin Name</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for s in others %}
+                        <tr>
+                          <td>{{ s.student_id | default('Unknown') }}</td>
+                          <td>{{ s.name | default('Unknown') }}</td>
+                          <td>{{ s.email | default('') }}</td>
+                          <td>{{ s.phone | default('') }}</td>
+                          <td>{{ s.department | default('None') }}</td>
+                          <td>{{ s.timestamp | datetimeformat | default('') }}</td>
+                          <td>{{ s.admin_name | default('Unknown') }}</td>
+                          <td>
+                            <div class="action-buttons">
+                              <button class="btn btn-danger btn-sm fire-btn" data-student-id="{{ s.student_id }}">
+                                <i class="fas fa-user-slash me-1"></i> Fire
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+
+          <!-- Fired Staff Section -->
+          {% if fired %}
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingFired">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFired" aria-expanded="false" aria-controls="collapseFired">
+                  <span class="department-icon" style="background: rgba(255, 45, 117, 0.2);">
+                    <i class="fas fa-user-slash"></i>
+                  </span>
+                  Fired Staff ({{ fired | length }})
+                </button>
+              </h2>
+              <div id="collapseFired" class="accordion-collapse collapse" aria-labelledby="headingFired" data-bs-parent="#departmentAccordion">
+                <div class="accordion-body">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Department</th>
+                        <th>Fired By</th>
+                        <th>Fired On</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for s in fired %}
+                        <tr>
+                          <td>{{ s.student_id | default('Unknown') }}</td>
+                          <td>{{ s.name | default('Unknown') }}</td>
+                          <td>{{ s.email | default('') }}</td>
+                          <td>{{ s.phone | default('') }}</td>
+                          <td>{{ s.department | default('') }}</td>
+                          <td>{{ s.fired_by | default('Unknown') }}</td>
+                          <td>{{ s.fired_timestamp | datetimeformat | default('Unknown') }}</td>
+                          <td>
+                            <div class="action-buttons">
+                              <button class="btn btn-delete btn-sm delete-btn" data-student-id="{{ s.student_id }}" data-student-name="{{ s.name }}">
+                                <i class="fas fa-trash-alt me-1"></i> Delete
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+
+        <a href="{{ url_for('home') }}" class="btn btn-primary mt-3">
+          <i class="fas fa-arrow-left me-2"></i> Back to Home
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fire Confirmation Modal -->
+  <div class="modal fade" id="fireModal" tabindex="-1" aria-labelledby="fireModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="fireModalLabel">
+            <i class="fas fa-exclamation-triangle me-2 text-warning"></i>Confirm Firing Staff
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p>Enter your admin password to confirm firing this staff member.</p>
+          <input type="password" class="form-control" id="firePassword" placeholder="Enter your password" required>
+          <input type="hidden" id="fireStudentId">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger" id="confirmFire">
+            <i class="fas fa-user-slash me-1"></i> Fire Staff
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">
+            <i class="fas fa-exclamation-triangle me-2 text-warning"></i>Permanently Delete Staff
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p class="fw-bold" id="deleteStaffName"></p>
+          <p class="text-warning">⚠️ This action cannot be undone! All user information will be permanently deleted from the system.</p>
+          <p>Enter your admin password to confirm deletion:</p>
+          <input type="password" class="form-control" id="deletePassword" placeholder="Enter your password" required>
+          <input type="hidden" id="deleteStudentId">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-delete" id="confirmDelete">
+            <i class="fas fa-trash-alt me-1"></i> Delete Permanently
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="successModalLabel">Success</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-center">
+          <i class="fas fa-check-circle fa-3x mb-3" style="color: var(--success-color);"></i>
+          <p class="h5" id="successMessage">Operation completed successfully!</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+   <div class="footer">
+      <p>© 2025 Face Recognition Attendance System | developed by ET08</i></p>
+    </div>
+
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Generate face grid cells
+    function generateFaceGrid() {
+      const grid = document.getElementById('faceGrid');
+      const cellSize = 50;
+      const cols = Math.ceil(window.innerWidth / cellSize);
+      const rows = Math.ceil(window.innerHeight / cellSize);
+      
+      for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+          const cell = document.createElement('div');
+          cell.className = 'grid-cell';
+          cell.style.left = `${j * cellSize}px`;
+          cell.style.top = `${i * cellSize}px`;
+          cell.style.animationDelay = `${Math.random() * 4}s`;
+          grid.appendChild(cell);
+        }
+      }
+    }
+
+    // Initialize grid on page load
+    window.addEventListener('load', generateFaceGrid);
+
+    // Fire button functionality
+    document.querySelectorAll('.fire-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.getElementById('fireStudentId').value = this.dataset.studentId;
+        new bootstrap.Modal(document.getElementById('fireModal')).show();
+      });
+    });
+
+    // Delete button functionality
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const studentId = this.dataset.studentId;
+        const studentName = this.dataset.studentName;
+        document.getElementById('deleteStudentId').value = studentId;
+        document.getElementById('deleteStaffName').textContent = `Are you sure you want to permanently delete ${studentName} (ID: ${studentId})?`;
+        new bootstrap.Modal(document.getElementById('deleteModal')).show();
+      });
+    });
+
+    // Confirm Fire
+    document.getElementById('confirmFire').addEventListener('click', function() {
+      const password = document.getElementById('firePassword').value;
+      const studentId = document.getElementById('fireStudentId').value;
+      if (!password) {
+        alert('Password is required');
+        return;
+      }
+      fetch('/fire_staff', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ student_id: studentId, password: password })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 'success') {
+          // Close password modal
+          bootstrap.Modal.getInstance(document.getElementById('fireModal')).hide();
+          // Show success modal
+          document.getElementById('successMessage').textContent = 'Staff fired successfully!';
+          new bootstrap.Modal(document.getElementById('successModal')).show();
+          // Reload after short delay
+          setTimeout(() => location.reload(), 2000);
+        } else {
+          alert(data.message);
+        }
+      })
+      .catch(err => {
+        alert('Error: ' + err);
+      });
+    });
+
+    // Confirm Delete
+// Delete button functionality
+document.querySelectorAll('.delete-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const studentId = this.dataset.studentId;
+        const studentName = this.dataset.studentName;
+        document.getElementById('deleteStudentId').value = studentId;
+        document.getElementById('deleteStaffName').textContent = `Are you sure you want to permanently delete ${studentName} (ID: ${studentId})?`;
+        new bootstrap.Modal(document.getElementById('deleteModal')).show();
+    });
+});
+
+// Confirm Delete
+document.getElementById('confirmDelete').addEventListener('click', function() {
+    const password = document.getElementById('deletePassword').value;
+    const studentId = document.getElementById('deleteStudentId').value;
+    
+    if (!password) {
+        alert('Password is required');
+        return;
+    }
+    
+    fetch('/delete_staff', {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+            student_id: studentId, 
+            password: password 
+        })
+    })
+    .then(res => {
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+    })
+    .then(data => {
+        if (data.status === 'success') {
+            // Close delete modal
+            bootstrap.Modal.getInstance(document.getElementById('deleteModal')).hide();
+            // Show success modal
+            document.getElementById('successMessage').textContent = 'Staff permanently deleted!';
+            new bootstrap.Modal(document.getElementById('successModal')).show();
+            // Reload after short delay
+            setTimeout(() => location.reload(), 2000);
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(err => {
+        console.error('Delete error:', err);
+        alert('Error: Failed to delete staff. Please try again.');
+    });
+});
+  </script>
+</body>
+</html>
