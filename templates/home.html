@@ -23,7 +23,7 @@
       --warning: #ffbd2e;
       --info: #2ef0ff;
       --light: #f0f8ff;
-      --dark: #0a1128;
+      --dark: #03050c;
       --darker: #050a1a;
     }
 
@@ -118,6 +118,13 @@
       padding-top: 10px;
       border-right: none;
       border-bottom: 1px solid rgba(0,198,255,0.2);
+      transition-duration: 0.3ms;
+    }
+    nav-link:hover{
+      background-color: #212b49f2;
+    }
+    nav-link.active{
+      background-color: #212b49f2 ;
     }
     .main-container {
       margin-left: 0;
@@ -131,6 +138,8 @@
     .nav-item {
       margin-bottom: 0 !important;
     }
+
+
   }
 
     /* Logout Button */
@@ -187,7 +196,7 @@
     }
 
     .dashboard-header p {
-      color: rgba(255, 255, 255, 0.7);
+      color:  var(--light);
       font-size: 1.1rem;
     }
 
@@ -350,7 +359,7 @@
   <!-- Navbar -->
 <!-- ...replace the <nav> block with the following... -->
 <nav class="navbar navbar-dark"
-     style="height:100vh; width:220px; position:fixed; top:0; left:0; z-index:100; border-radius:0; border-right:1px solid rgba(0,198,255,0.2); background:rgba(10,17,40,0.95); display:flex; flex-direction:column; align-items:center; padding-top:30px; justify-content:space-between;">
+     style="height:100vh; width:220px; position:fixed; top:0; left:0; z-index:100; border-radius:0; border-right:1px solid rgba(0,198,255,0.2); background:#0a1128f2; display:flex; flex-direction:column; align-items:center; padding-top:30px; justify-content:space-between;">
   <div style="width:100%; display:flex; flex-direction:column; align-items:center;">
     <a class="navbar-brand mb-4" href="#" style="font-size:1.4rem; text-align: left;">
       <i class="fas fa-camera-retro me-2"></i>
@@ -358,7 +367,7 @@
     </a>
     <ul class="navbar-nav w-100" style="flex-direction:column; margin-top:0;">
       <li class="nav-item mb-2">
-        <a class="nav-link active" href="#"><i class="fas fa-home me-1"></i> Home</a>
+        <a class="nav-link active" href="#" style="background-color: #212b49f2 ;"><i class="fas fa-home me-1"></i> Home</a>
       </li>
       <li class="nav-item mb-2">
         <a class="nav-link" href="{{ url_for('register_page') }}"><i class="fas fa-user-plus me-1"></i> Register</a>
@@ -390,8 +399,8 @@
   <!-- Dashboard -->
   <div class="container mt-5">
     <div class="dashboard-header" data-aos="fade-down">
-      <h2>Welcome, {{ session.get('admin', 'Admin') }} 👋</h2>
-      <p class="text-muted">Here's a quick overview of today's attendance statistics</p>
+      <h2>Welcome, {{ session.get('admin', 'Admin') }}</h2>
+      <p class="text-muted" style="color:var(--light);">Here's a quick overview of today's attendance statistics</p>
     </div>
 
     <!-- Stats Cards -->
