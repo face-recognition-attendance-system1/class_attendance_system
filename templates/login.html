@@ -169,38 +169,7 @@
         transform: scaleX(0);
       }
     }
-    
-    /* Face Grid Animation */
-    .face-grid {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      pointer-events: none;
-      opacity: 0.05;
-    }
-    
-    .grid-cell {
-      position: absolute;
-      width: 50px;
-      height: 50px;
-      border: 1px solid var(--primary-color);
-      animation: gridPulse 4s infinite ease-in-out;
-    }
-    
-    @keyframes gridPulse {
-      0%, 100% {
-        opacity: 0.1;
-        box-shadow: 0 0 5px var(--primary-color);
-      }
-      50% {
-        opacity: 0.3;
-        box-shadow: 0 0 15px var(--primary-color);
-      }
-    }
-    
+      
     /* Face Recognition Animation */
     .face-recognition-animation {
       position: fixed;
@@ -511,36 +480,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     // Generate face grid cells
-   // ...existing code...
-  function generateFaceGrid() {
-  const grid = document.getElementById('faceGrid');
-  const cellSize = 50;
-  let cols = Math.ceil(window.innerWidth / cellSize);
-  let rows = Math.ceil(window.innerHeight / cellSize);
 
-  // Limit total cells for performance
-  const maxCells = 120; // adjust as needed
-  if (cols * rows > maxCells) {
-    const ratio = Math.sqrt(maxCells / (cols * rows));
-    cols = Math.max(2, Math.floor(cols * ratio));
-    rows = Math.max(2, Math.floor(rows * ratio));
-  }
-
-  for (let i = 0; i < rows; i++) {
-    for (let j = 0; j < cols; j++) {
-      const cell = document.createElement('div');
-      cell.className = 'grid-cell';
-      cell.style.left = `${j * cellSize}px`;
-      cell.style.top = `${i * cellSize}px`;
-      cell.style.animationDelay = `${Math.random() * 4}s`;
-      grid.appendChild(cell);
-    }
-  }
-  }
-// ...existing code...
-
-    // Initialize grid on page load
-    window.addEventListener('load', generateFaceGrid);
 
     // Add focus effects to form inputs
     document.addEventListener('DOMContentLoaded', function() {

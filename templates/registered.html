@@ -580,15 +580,9 @@
   </style>
 </head>
 <body>
-  <!-- Animated Background Pattern -->
-  <div class="background-pattern"></div>
+
   
-  <!-- Face Recognition Animation -->
-  <div class="face-recognition-animation">
-    <div class="face-circle"></div>
-    <div class="face-circle"></div>
-    <div class="face-circle"></div>
-  </div>
+
 
   <!-- Navigation Bar -->
 <nav class="navbar navbar-dark"
@@ -745,7 +739,9 @@
             </div>
           {% endif %}
 
-          <!-- Fired Staff Section -->
+
+
+
           {% if fired %}
             <div class="accordion-item">
               <h2 class="accordion-header" id="headingFired">
@@ -876,17 +872,8 @@
     </div>
   </div>
 
-  <!-- Footer -->
-   <div class="footer">
-      <p>© 2025 Face Recognition Attendance System | Developed by ET08</i></p>
-    </div>
-
-
-  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-
-    // Fire button functionality
     document.querySelectorAll('.fire-btn').forEach(btn => {
       btn.addEventListener('click', function() {
         document.getElementById('fireStudentId').value = this.dataset.studentId;
@@ -894,7 +881,6 @@
       });
     });
 
-    // Delete button functionality
     document.querySelectorAll('.delete-btn').forEach(btn => {
       btn.addEventListener('click', function() {
         const studentId = this.dataset.studentId;
