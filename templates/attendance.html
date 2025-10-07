@@ -18,9 +18,9 @@
       --danger-color: #ff2d75;
       --warning-color: #ffbd2e;
       --info-color: #2ef0ff;
-      --light-bg: #0a1128;
-      --dark-text: #e0e0e0;
-      --card-bg: rgba(10, 17, 40, 0.7);
+      --light-color: #f0f8ff;
+      --dark-color: #03050c;
+      --darker-color: #050a1a;
     }
 
     body {
@@ -32,7 +32,7 @@
     }
 
     .main-container {
-    margin-left: px; /* shift content right to make space for vertical nav */
+       margin-left: 200px;
   }
     @media (max-width: 768px) {
     nav.navbar {
@@ -132,7 +132,7 @@
       border: 1px solid rgba(0, 198, 255, 0.2);
       text-align: left;
       vertical-align: middle;
-      color: var(--dark-text);
+      color: var(--light-color);
     }
 
     .table th {
@@ -152,7 +152,7 @@
     }
 
     .btn-primary {
-      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
       border: none;
       padding: 12px 30px;
       border-radius: 50px;
@@ -206,29 +206,16 @@
       font-weight: 500;
       margin-bottom: 8px;
     }
-
-    .footer {
-      position: fixed;
-        font-size: 0.9rem;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        text-align: center;
-        padding: 20px;
-        color: rgba(255, 255, 255, 0.5);
-        background: transparent;
-        border-top: 1px solid rgba(0, 198, 255, 0.2);
-        z-index: 111;
-    }
-
     .stats-container {
       display: flex;
       justify-content: space-between;
       margin-bottom: 20px;
+      color:var(--light-color);
     }
 
     .stat-card {
       background: var(--card-bg);
+      border-top: 4px solid var(--primary-color);
       backdrop-filter: blur(10px);
       border-radius: 15px;
       padding: 20px;
@@ -237,38 +224,29 @@
       flex: 1;
       margin: 0 10px;
       transition: all 0.3s ease;
+      
     }
-
-    .stat-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(0, 198, 255, 0.2);
-    }
-
     .stat-card h3 {
-      font-size: 2.5rem;
-      margin: 10px 0;
-      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-      background-clip: text;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+    font-size: 2.5rem;
+    margin: 10px 0;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .stat-card i{
+    color:linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  }
+  .stat-card p{
+    color: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  }
 
-    .stat-card.total {
-      border-top: 4px solid var(--primary-color);
-    }
+  .stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 198, 255, 0.2);
+  }
 
-    .stat-card.present {
-      border-top: 4px solid var(--success-color);
-    }
-
-    .stat-card.late {
-      border-top: 4px solid var(--warning-color);
-    }
-
-    .stat-card.absent {
-      border-top: 4px solid var(--danger-color);
-    }
-
+  
     .live-indicator {
       display: inline-flex;
       align-items: center;
@@ -287,7 +265,20 @@
       margin-right: 8px;
       animation: pulse 1.5s infinite;
     }
-
+    .main-container{
+      padding-left:200px;
+    }
+    .main-container .dashboard-header h2 {
+      font-weight: 400;
+      background: var(--light-color);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 1.5rem;
+      margin-bottom: 30px;
+      padding-top: 30px;
+      align-self: auto;
+    }
     @keyframes pulse {
       0% { opacity: 1; box-shadow: 0 0 0 0 rgba(255, 45, 117, 0.7); }
       70% { opacity: 0.7; box-shadow: 0 0 0 10px rgba(255, 45, 117, 0); }
@@ -306,26 +297,11 @@
       .card-body { padding: 15px; }
       .stats-container { flex-direction: column; }
       .stat-card { margin: 10px 0; }
-      .face-recognition-animation { width: 200px; height: 200px; }
-      .face-circle:nth-child(3) { width: 200px; height: 200px; }
+  
     }
   </style>
 </head>
 <body>
-  <!-- Animated Background Pattern -->
-  <div class="background-pattern"></div>
-
-  <!-- Face Grid Animation -->
-  <div class="face-grid" id="faceGrid"></div>
-
-  <!-- Face Recognition Animation -->
-  <div class="face-recognition-animation">
-    <div class="face-circle"></div>
-    <div class="face-circle"></div>
-    <div class="face-circle"></div>
-  </div>
-
-  <!-- Navigation Bar -->
  <!-- ...replace the <nav> block with the following... -->
 <nav class="navbar navbar-dark"
      style="height:100vh; width:220px; position:fixed; top:0; left:0; z-index:100; border-radius:0; border-right:1px solid rgba(0,198,255,0.2); background:rgba(10,17,40,0.95); display:flex; flex-direction:column; align-items:center; padding-top:30px; justify-content:space-between;">
@@ -366,26 +342,29 @@
 <!-- ...existing code... -->
 
   <!-- Main Content -->
-  <div class="container main-container">
+  <div class="main-container">
     <!-- Stats Cards -->
+    <div class="dashboard-header" data-aos="fade-down">
+      <h2>Attendance</h2>
+      </div>
     <div class="stats-container">
-      <div class="stat-card total">
-        <i class="fas fa-users fa-2x" style="color: var(--primary-color);"></i>
+      <div class="stat-card ">
+        <i class="fas fa-users fa-2x"></i>
         <h3 id="total-staff">{{ (present|length) + (late|length) + (absent|length) }}</h3>
         <p>Total Staff</p>
       </div>
-      <div class="stat-card present">
-        <i class="fas fa-user-check fa-2x" style="color: var(--success-color);"></i>
+      <div class="stat-card ">
+        <i class="fas fa-user-check fa-2x" ></i>
         <h3 id="present-today">{{ present|length }}</h3>
         <p>Present Today</p>
       </div>
-      <div class="stat-card late">
-        <i class="fas fa-clock fa-2x" style="color: var(--warning-color);"></i>
+      <div class="stat-card ">
+        <i class="fas fa-clock fa-2x"></i>
         <h3 id="late-today">{{ late|length }}</h3>
         <p>Late Today</p>
       </div>
-      <div class="stat-card absent">
-        <i class="fas fa-user-times fa-2x" style="color: var(--danger-color);"></i>
+      <div class="stat-card ">
+        <i class="fas fa-user-times fa-2x"></i>
         <h3 id="absent-today">{{ absent|length }}</h3>
         <p>Absent Today</p>
       </div>
@@ -531,7 +510,7 @@
             </div>
 
             <h4 class="mt-4" style="color: var(--danger-color);">Absent Staff</h4>
-            <div id="absent-table-container">
+            <div id="absent-table-container" style="color:var(--light-color)">
               {% if absent %}
                 <table class="table" id="absent-table">
                   <thead>

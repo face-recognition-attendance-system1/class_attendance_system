@@ -1,0 +1,18 @@
+<footer class="site-footer" role="contentinfo">
+	<div class="footer-inner">
+		<div class="footer-brand">
+			<i class="fas fa-camera-retro" aria-hidden="true"></i>
+			<span class="product-name">Attendance System</span>
+		</div>
+		<p class="copyright">&copy; <span id="footerYear"></span> Face Recognition Attendance System | Developed by ET08</p>
+	</div>
+</footer>
+
+<script>
+	// Set current year without waiting for other scripts
+	(function(){
+		var y = new Date().getFullYear();
+		var el = document.getElementById('footerYear');
+		if (el) el.textContent = y;
+	})();
+</script>

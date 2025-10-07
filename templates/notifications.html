@@ -126,7 +126,7 @@
     }
 
     .btn-primary {
-      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
       border: none;
       padding: 12px 30px;
       border-radius: 50px;
@@ -159,7 +159,7 @@
     }
 
     .btn-danger {
-      background: linear-gradient(90deg, var(--danger-color), #c0392b);
+      background: var(--secondary-color);
       border: none;
       padding: 8px 20px;
       border-radius: 50px;
@@ -168,7 +168,7 @@
       color: white;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 3px 10px rgba(255, 45, 117, 0.3);
+      box-shadow: 0 3px 10px blue;
     }
 
     .btn-danger::before {
@@ -183,7 +183,7 @@
     }
 
     .btn-danger:hover {
-      background: linear-gradient(90deg, #c0392b, var(--danger-color));
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
       transform: translateY(-2px);
       box-shadow: 0 5px 15px rgba(255, 45, 117, 0.4);
     }
