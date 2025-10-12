@@ -416,7 +416,7 @@ def do_login():
             logger.error(f"Password verification failed for {username}: {e}")
 
     logger.warning(f"Invalid login attempt for {username}")
-    return render_template("login.html", error="Invalid credentials")
+    return render_template("login.html", error="Invalid username or password")
 
 @app.route("/home")
 def home():
