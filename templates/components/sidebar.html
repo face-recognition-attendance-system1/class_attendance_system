@@ -1,0 +1,169 @@
+<!-- Sidebar Navigation Component -->
+<!-- Usage: Include this component using: include 'components/sidebar.html' with context -->
+<!-- Set 'current_page' variable before including this component -->
+
+<!-- Inline script to prevent FOUC (Flash of Unstyled Content) -->
+<script>
+  // Apply collapsed state immediately before rendering to prevent flash
+  (function() {
+    const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+    if (isCollapsed) {
+      document.documentElement.classList.add('sidebar-collapsed');
+    }
+  })();
+</script>
+
+<nav class="navbar navbar-dark" id="sidebar">
+  <!-- Toggle Button -->
+  <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle Sidebar">
+    <i class="fas fa-chevron-left"></i>
+  </button>
+
+  <div class="sidebar-inner">
+    <a class="navbar-brand" href="{{ url_for('home') }}" title="Attendance System">
+      <img class="site-logo" src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo" loading="lazy" onerror="this.style.display='none'" />
+      <span>ATTENDANCE<br>SYSTEM</span>
+    </a>
+  <ul class="navbar-nav nav-cluster">
+      <li class="nav-item">
+        <a class="nav-link {% if current_page == 'home' %}active{% endif %}" href="{{ url_for('home') }}" title="Home">
+          <i class="fas fa-home"></i>
+          <span>Home</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if current_page == 'register' %}active{% endif %}" href="{{ url_for('register_page') }}" title="Register">
+          <i class="fas fa-user-plus"></i>
+          <span>Register</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if current_page == 'admin_register' %}active{% endif %}" href="{{ url_for('admin_register_page') }}" title="Admin Register">
+          <i class="fas fa-user-shield"></i>
+          <span>Admin Register</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if current_page == 'attendance' %}active{% endif %}" href="{{ url_for('attendance') }}" title="Attendance">
+          <i class="fas fa-chart-bar"></i>
+          <span>Attendance</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if current_page == 'notifications' %}active{% endif %}" href="{{ url_for('notifications') }}" title="Notifications">
+          <i class="fas fa-bell"></i>
+          <span>Notifications</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if current_page == 'registered' %}active{% endif %}" href="{{ url_for('registered') }}" title="Registered Staff">
+          <i class="fas fa-users"></i>
+          <span>Registered Staff</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="sidebar-footer">
+    <hr class="sidebar-separator">
+    <ul class="navbar-nav w-100">
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('logout') }}" title="Logout">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<script>
+  const DESKTOP_BREAKPOINT = 769; // px
+
+  function applyDesktopLayout(sidebar, mainContainer, footer) {
+    const collapsed = sidebar.classList.contains('collapsed');
+    if (mainContainer) {
+      if (collapsed) {
+        mainContainer.style.marginLeft = '70px';
+        mainContainer.style.maxWidth = 'calc(100vw - 90px)';
+      } else {
+        mainContainer.style.marginLeft = '260px';
+        mainContainer.style.maxWidth = 'calc(100vw - 280px)';
+      }
+    }
+    if (footer) {
+      footer.style.marginLeft = collapsed ? '70px' : '260px';
+      footer.style.maxWidth = collapsed ? 'calc(100vw - 90px)' : 'calc(100vw - 280px)';
+    }
+  }
+
+  function applyMobileLayout(mainContainer, footer) {
+    if (mainContainer) {
+      mainContainer.style.marginLeft = '0';
+      mainContainer.style.maxWidth = '100%';
+    }
+    if (footer) {
+      footer.style.marginLeft = '0';
+      footer.style.maxWidth = '100%';
+    }
+  }
+
+  // Sidebar toggle functionality
+  function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+  const mainContainer = document.querySelector('.main-container');
+  const footer = document.querySelector('footer.site-footer');
+    const isDesktop = window.innerWidth >= DESKTOP_BREAKPOINT;
+
+    sidebar.classList.toggle('collapsed');
+    document.documentElement.classList.toggle('sidebar-collapsed', sidebar.classList.contains('collapsed') && isDesktop);
+
+    // Persist only the collapsed intent (so when returning to desktop it remembers)
+    localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed') ? 'true' : 'false');
+
+    if (isDesktop) {
+      applyDesktopLayout(sidebar, mainContainer, footer);
+    } else {
+      // Mobile: no horizontal contraction of content
+      applyMobileLayout(mainContainer, footer);
+    }
+  }
+
+  // Restore sidebar state on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    const sidebar = document.getElementById('sidebar');
+  const mainContainer = document.querySelector('.main-container');
+  const footer = document.querySelector('footer.site-footer');
+    const collapsedPreference = localStorage.getItem('sidebarCollapsed') === 'true';
+    const isDesktop = window.innerWidth >= DESKTOP_BREAKPOINT;
+
+    if (collapsedPreference) {
+      sidebar.classList.add('collapsed');
+    } else {
+      sidebar.classList.remove('collapsed');
+    }
+
+    if (isDesktop) {
+      document.documentElement.classList.toggle('sidebar-collapsed', sidebar.classList.contains('collapsed'));
+      applyDesktopLayout(sidebar, mainContainer, footer);
+    } else {
+      document.documentElement.classList.remove('sidebar-collapsed');
+      applyMobileLayout(mainContainer, footer);
+    }
+  });
+
+  // Handle responsive behavior
+  window.addEventListener('resize', function() {
+    const sidebar = document.getElementById('sidebar');
+  const mainContainer = document.querySelector('.main-container');
+  const footer = document.querySelector('footer.site-footer');
+    const isDesktop = window.innerWidth >= DESKTOP_BREAKPOINT;
+
+    if (isDesktop) {
+      document.documentElement.classList.toggle('sidebar-collapsed', sidebar.classList.contains('collapsed'));
+      applyDesktopLayout(sidebar, mainContainer, footer);
+    } else {
+      document.documentElement.classList.remove('sidebar-collapsed');
+      applyMobileLayout(mainContainer, footer);
+    }
+  });
+</script>

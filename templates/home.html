@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Face Recognition Attendance</title>
+  
+  <!-- Favicon: Set to favicon.jpg -->
+  <link rel="icon" type="image/jpeg" href="{{ url_for('static', filename='images/logo2.jpg') }}">
+  <link rel="shortcut icon" type="image/jpeg" href="{{ url_for('static', filename='images/favicon.jpg') }}">
+  
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- AOS Animations -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+  {% set current_page = 'home' %}
+ 
+  {% include 'components/sidebar.html' with context %}
+  
+  <div class="main-container">
+    <div class="top-bar">
+      <h2>Home</h2>
+    </div>
+    <hr>
+    <div class="sub-container">
+      <div class="dashboard-header" data-aos="fade-down">
+        <h2>Welcome, {{ session.get('admin', 'Admin') }}</h2>
+        <p class="text-muted">Here's a quick overview of today's attendance statistics</p>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="row g-4">
+        <div class="col-md-4" data-aos="zoom-in">
+          <div class="card stat-card text-center">
+            <i class="fas fa-users stat-icon"></i>
+            <h5>Total Registered</h5>
+            <p class="h3">{{ stats.total_registered | default(0) }}</p>
+          </div>
+        </div>
+        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
+          <div class="card stat-card text-center">
+            <i class="fas fa-user-check stat-icon"></i>
+            <h5>Present Today</h5>
+            <p class="h3">{{ stats.present_today | default(0) }}</p>
+          </div>
+        </div>
+        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
+          <div class="card stat-card text-center">
+            <i class="fas fa-user-times stat-icon"></i>
+            <h5>Absent Today</h5>
+            <p class="h3">{{ stats.absent_today | default(0) }}</p>
+          </div>
+        </div>
+        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="300">
+          <div class="card stat-card text-center">
+            <i class="fas fa-clock stat-icon"></i>
+            <h5>Avg Login Time</h5>
+            <p class="h3">{{ stats.avg_login_time | default('N/A') }}</p>
+          </div>
+        </div>
+        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="400">
+          <div class="card stat-card text-center">
+            <i class="fas fa-user-slash stat-icon"></i>
+            <h5>Total Fired</h5>
+            <p class="h3">{{ stats.total_fired | default(0) }}</p>
+          </div>
+        </div>
+        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="500">
+          <div class="card stat-card text-center">
+            <i class="fas fa-bell stat-icon"></i>
+            <h5>Notifications</h5>
+            <p class="h3">{{ stats.notifications | default(0) }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="text-center mt-5" data-aos="fade-up">
+        <a href="{{ url_for('register_page') }}" class="btn btn-custom me-3">
+          <i class="fas fa-user-plus me-2"></i> Register New Staff
+        </a>
+        <a href="{{ url_for('attendance') }}" class="btn btn-custom me-3">
+          <i class="fas fa-chart-bar me-2"></i> View Attendance
+        </a>
+        <a href="{{ url_for('registered') }}" class="btn btn-custom">
+          <i class="fas fa-users me-2"></i> Registered Staffs
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: true,
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+:root {
+      --primary: #00c6ff;
+      --secondary: #0072ff;
+      --accent: #7e42ff;
+      --success: #00ff88;
+      --danger: #ff2d75;
+      --warning: #ffbd2e;
+      --info: #2ef0ff;
+      --light: #f0f8ff;
+      --dark: #03050c;
+      --darker: #050a1a;
+    }
+
+    body {
+      /* Use Poppins site-wide as the primary font */
+      font-family: 'Poppins', 'Segoe UI', 'Roboto', sans-serif !important;
+      color: var(--light);
+      overflow-x: hidden;
+      min-height: 100%;
+      background: #202841f2;
+      padding-right:50px;
+      padding-left:50px;
+
+    }
+    .main-container{
+      display:grid;
+      align-items:center;
+    }
+    .main-container .top-bar{
+      display:flex;
+      justify-content: flex-start;
+      align-items: flex-end;
+    
+    }
+    .main-container h2{
+      align-items:center;
+      padding-top:15px;
+      padding-bottom: 5px;
+
+    }
+
+    .dashboard-header h2 {
+      font-weight: 400;
+      background: var(--light);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      margin-top:20px;
+      align-self: auto;
+    }
+
+    .dashboard-header p {
+      color:  var(--light) !important;
+      font-size: 1.1rem;
+    }
+
+    /* Stats Cards */
+    .stat-card {
+      background: rgba(10, 17, 40, 0.6);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      border: 1px solid rgba(0, 198, 255, 0.2);
+      transition: all 0.4s ease;
+      overflow: hidden;
+      position: relative;
+      padding: 25px 20px;
+      display:flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+    }
+
+    .stat-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(0, 198, 255, 0.2);
+      border-color: rgba(0, 198, 255, 0.5);
+    }
+
+    .stat-icon {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stat-card h5 {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+
+    .stat-card .h3 {
+      font-weight: 700;
+      font-size: 2.2rem;
+      color:var(--light);
+    }
+
+    /* Custom Buttons */
+    .btn-custom {
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border: none;
+      padding: 12px 30px;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 198, 255, 0.3);
+    }
+
+    .btn-custom::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: all 0.6s ease;
+    }
+
+    .btn-custom:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 198, 255, 0.4);
+    }
+
+    .btn-custom:hover::before {
+      left: 100%;
+    }
+    @media (max-width: 768px) {
+      .dashboard-header h2 {
+        font-size: 2rem;
+      }
+      
+      .stat-card {
+        margin-bottom: 20px;
+      }
+      
+      .btn-custom {
+        display: block;
+        width: 100%;
+        margin-bottom: 30x;
+      }
+
+      .btn-logout {
+        margin-left: 0;
+        margin-top: 10px;
+        width: 100%;
+      }
+    }

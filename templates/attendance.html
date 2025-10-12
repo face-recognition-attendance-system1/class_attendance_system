@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance Dashboard</title>
+  <!-- Favicon -->
+<link rel="icon" type="image/jpeg" href="{{ url_for('static', filename='images/logo2.jpg') }}">
+<link rel="shortcut icon" type="image/jpeg" href="{{ url_for('static', filename='images/favicon.jpg') }}">
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Global site font and main styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/attendance.css') }}">
+</head>
+<body>
+
+  {% set current_page = 'attendance' %}
+  {%include 'components/sidebar.html' with context %}
+  <div class="main-container">
+    <div class="top-bar" data-aos="fade-down">
+      <h2>Attendance</h2>
+    </div>
+    <hr>
+    <div class="sub-container">
+    <div class="stats-container">
+      <div class="card stat-card text-center">
+        <i class="fas fa-users fa-2x"></i>
+        <h3 id="total-staff">{{ (present|length) + (late|length) + (absent|length) }}</h3>
+        <p>Total Staff</p>
+      </div>
+      <div class="card stat-card text-center ">
+        <i class="fas fa-user-check fa-2x" ></i>
+        <h3 id="present-today">{{ present|length }}</h3>
+        <p>Present Today</p>
+      </div>
+      <div class="card stat-card text-center ">
+        <i class="fas fa-clock fa-2x"></i>
+        <h3 id="late-today">{{ late|length }}</h3>
+        <p>Late Today</p>
+      </div>
+      <div class="card stat-card text-center ">
+        <i class="fas fa-user-times fa-2x"></i>
+        <h3 id="absent-today">{{ absent|length }}</h3>
+        <p>Absent Today</p>
+      </div>
+    </div>
+
+    <!-- Live Stream -->
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <i class="fas fa-video me-2"></i> Live ESP32 Camera Feed
+          </div>
+          <div class="card-body">
+            <div class="live-indicator">
+              <span class="live-dot"></span>
+              <span>LIVE STREAMING</span>
+            </div>
+            <div class="video-container">
+              <img id="video-feed" src="{{ url_for('video_feed') }}" class="img-fluid" alt="Live ESP32 Stream">
+              <div id="video-error" class="video-error" style="display: none;">
+                Unable to load ESP32 camera feed. Please check the camera connection.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Attendance Records -->
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <i class="fas fa-chart-bar me-2"></i> Attendance Records
+          </div>
+          <div class="card-body">
+            <form method="POST" action="{{ url_for('attendance') }}" id="date-filter-form">
+              <div class="row mb-3">
+                <div class="col-md-4">
+                  <label for="year" class="form-label">Year</label>
+                  <select class="form-select" id="year" name="year">
+                    {% for year in years %}
+                      <option value="{{ year }}" {% if year == selected_year %}selected{% endif %}>{{ year }}</option>
+                    {% endfor %}
+                    {% if not years %}
+                      <option value="{{ selected_year }}" selected>{{ selected_year }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label for="month" class="form-label">Month</label>
+                  <select class="form-select" id="month" name="month">
+                    {% for month in months.get(selected_year, []) %}
+                      <option value="{{ month }}" {% if month == selected_month %}selected{% endif %}>{{ month }}</option>
+                    {% endfor %}
+                    {% if not months.get(selected_year, []) %}
+                      <option value="{{ selected_month }}" selected>{{ selected_month }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label for="day" class="form-label">Day</label>
+                  <select class="form-select" id="day" name="day">
+                    {% for day in range(1, 32) %}
+                      <option value="{{ day }}" {% if day == selected_day %}selected{% endif %}>{{ day }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary"><i class="fas fa-filter me-2"></i> Filter</button>
+            </form>
+
+            <div id="loading-indicator" class="loading-indicator">
+              <i class="fas fa-spinner fa-spin me-2"></i> Updating attendance data...
+            </div>
+
+            <h4 class="mt-4" style="color: var(--success-color);">Present Staff</h4>
+            <div id="present-table-container">
+              {% if present %}
+                <table class="table" id="present-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Phone</th>
+                      <th>Department</th>
+                      <th>Timestamp</th>
+                      <th>Admin Name</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for s in present %}
+                      <tr>
+                        <td>{{ s.student_id }}</td>
+                        <td>{{ s.name }}</td>
+                        <td>{{ s.email }}</td>
+                        <td>{{ s.phone }}</td>
+                        <td>{{ s.get('department', '') }}</td>
+                        <td>{{ s.get('timestamp', '')|datetimeformat }}</td>
+                        <td>{{ s.get('admin_name', 'Unknown') }}</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              {% else %}
+                <p>No staff present on this date.</p>
+              {% endif %}
+            </div>
+
+            <h4 class="mt-4" style="color: var(--warning-color);">Late Comers</h4>
+            <div id="late-table-container">
+              {% if late %}
+                <table class="table" id="late-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Phone</th>
+                      <th>Department</th>
+                      <th>Timestamp</th>
+                      <th>Admin Name</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for s in late %}
+                      <tr>
+                        <td>{{ s.student_id }}</td>
+                        <td>{{ s.name }}</td>
+                        <td>{{ s.email }}</td>
+                        <td>{{ s.phone }}</td>
+                        <td>{{ s.get('department', '') }}</td>
+                        <td>{{ s.get('timestamp', '')|datetimeformat }}</td>
+                        <td>{{ s.get('admin_name', 'Unknown') }}</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              {% else %}
+                <p>No staff late on this date.</p>
+              {% endif %}
+            </div>
+
+            <h4 class="mt-4" style="color: var(--danger-color);">Absent Staff</h4>
+            <div id="absent-table-container" style="color:var(--light-color)">
+              {% if absent %}
+                <table class="table" id="absent-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Phone</th>
+                      <th>Department</th>
+                      <th>Admin Name</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for s in absent %}
+                      <tr>
+                        <td>{{ s.student_id }}</td>
+                        <td>{{ s.name }}</td>
+                        <td>{{ s.email }}</td>
+                        <td>{{ s.phone }}</td>
+                        <td>{{ s.get('department', '') }}</td>
+                        <td>{{ s.get('admin_name', 'Unknown') }}</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              {% else %}
+                <p>No staff absent on this date.</p>
+              {% endif %}
+            </div>
+
+            <a href="{{ url_for('home') }}" class="btn btn-primary mt-3">
+              <i class="fas fa-arrow-left me-2"></i> Back to Home
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+  
+
+    // Format ISO timestamp to readable format
+    function formatDateTime(isoString) {
+      if (!isoString) return '';
+      const date = new Date(isoString);
+      return date.toLocaleString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+    }
+
+    // Update attendance tables and stats
+    function updateAttendance() {
+      const year = document.getElementById('year').value;
+      const month = document.getElementById('month').value;
+      const day = document.getElementById('day').value;
+      const loadingIndicator = document.getElementById('loading-indicator');
+      
+      loadingIndicator.style.display = 'block';
+      
+      fetch(`/attendance_data?year=${year}&month=${month}&day=${day}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          // Update stats
+          document.getElementById('total-staff').textContent = data.stats.total_registered;
+          document.getElementById('present-today').textContent = data.stats.present_today;
+          document.getElementById('late-today').textContent = data.stats.late_today;
+          document.getElementById('absent-today').textContent = data.stats.absent_today;
+
+          // Update present table
+          const presentTableContainer = document.getElementById('present-table-container');
+          if (data.present.length > 0) {
+            let table = `
+              <table class="table" id="present-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Department</th>
+                    <th>Timestamp</th>
+                    <th>Admin Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+            `;
+            data.present.forEach(s => {
+              table += `
+                <tr>
+                  <td>${s.student_id}</td>
+                  <td>${s.name}</td>
+                  <td>${s.email}</td>
+                  <td>${s.phone}</td>
+                  <td>${s.department || ''}</td>
+                  <td>${formatDateTime(s.timestamp)}</td>
+                  <td>${s.admin_name || 'Unknown'}</td>
+                </tr>
+              `;
+            });
+            table += `</tbody></table>`;
+            presentTableContainer.innerHTML = table;
+          } else {
+            presentTableContainer.innerHTML = '<p>No staff present on this date.</p>';
+          }
+
+          // Update late table
+          const lateTableContainer = document.getElementById('late-table-container');
+          if (data.late.length > 0) {
+            let table = `
+              <table class="table" id="late-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Department</th>
+                    <th>Timestamp</th>
+                    <th>Admin Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+            `;
+            data.late.forEach(s => {
+              table += `
+                <tr>
+                  <td>${s.student_id}</td>
+                  <td>${s.name}</td>
+                  <td>${s.email}</td>
+                  <td>${s.phone}</td>
+                  <td>${s.department || ''}</td>
+                  <td>${formatDateTime(s.timestamp)}</td>
+                  <td>${s.admin_name || 'Unknown'}</td>
+                </tr>
+              `;
+            });
+            table += `</tbody></table>`;
+            lateTableContainer.innerHTML = table;
+          } else {
+            lateTableContainer.innerHTML = '<p>No staff late on this date.</p>';
+          }
+
+          // Update absent table
+          const absentTableContainer = document.getElementById('absent-table-container');
+          if (data.absent.length > 0) {
+            let table = `
+              <table class="table" id="absent-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Department</th>
+                    <th>Admin Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+            `;
+            data.absent.forEach(s => {
+              table += `
+                <tr>
+                  <td>${s.student_id}</td>
+                  <td>${s.name}</td>
+                  <td>${s.email}</td>
+                  <td>${s.phone}</td>
+                  <td>${s.department || ''}</td>
+                  <td>${s.admin_name || 'Unknown'}</td>
+                </tr>
+              `;
+            });
+            table += `</tbody></table>`;
+            absentTableContainer.innerHTML = table;
+          } else {
+            absentTableContainer.innerHTML = '<p>No staff absent on this date.</p>';
+          }
+
+          loadingIndicator.style.display = 'none';
+        })
+        .catch(error => {
+          console.error('Error fetching attendance data:', error);
+          loadingIndicator.style.display = 'none';
+          alert('Failed to update attendance data. Please check your connection and try again.');
+        });
+    }
+
+    // Initialize page
+    window.onload = function() {
+      const form = document.getElementById('date-filter-form');
+      form.addEventListener('change', updateAttendance);
+
+      // Periodically check video feed status
+      const videoFeed = document.getElementById('video-feed');
+      const videoError = document.getElementById('video-error');
+      videoFeed.onerror = function() {
+        videoFeed.style.display = 'none';
+        videoError.style.display = 'block';
+      };
+      videoFeed.onload = function() {
+        videoFeed.style.display = 'block';
+        videoError.style.display = 'none';
+      };
+      updateAttendance(); // Initial fetch
+      setInterval(updateAttendance, 5000); // Poll every 5 seconds
+    };
+
+
+  </script>
+</body>
+</html>
