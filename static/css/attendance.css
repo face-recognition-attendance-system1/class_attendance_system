@@ -49,7 +49,7 @@
       left: 0;
       width: 100%;
       height: 5px;
-      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
     }
 
     .card-header {

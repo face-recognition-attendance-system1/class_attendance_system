@@ -204,10 +204,10 @@ body {
 }
 
 .notification-header {
-    color: var(--warning-color);
+    color: var(--light-color);
     margin-bottom: 20px;
     padding-bottom: 10px;
-    border-bottom: 2px solid rgba(255, 189, 46, 0.3);
+    border-bottom: 2px var(--light-color)
 }
 
 /* Responsive Adjustments */

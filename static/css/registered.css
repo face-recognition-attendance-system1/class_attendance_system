@@ -132,6 +132,72 @@ body {
     background-color: rgba(0, 198, 255, 0.1);
     transform: translateX(5px);
 }
+.btn-primary {
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    border: none;
+    padding: 12px 30px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 198, 255, 0.3);
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: all 0.6s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 198, 255, 0.4);
+}
+
+.btn-primary:hover::before {
+    left: 100%;
+}
+
+.btn-danger {
+    background: var(--secondary-color);
+    border: none;
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 3px 10px blue;
+}
+
+.btn-danger::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: all 0.6s ease;
+}
+
+.btn-danger:hover {
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 45, 117, 0.4);
+}
+
+.btn-danger:hover::before {
+    left: 100%;
+}
 
 .btn-primary {
     background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
@@ -153,7 +219,7 @@ body {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg,var(--primary-color),var(--secondary-color));;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
     transition: all 0.6s ease;
 }
 
@@ -166,51 +232,17 @@ body {
     left: 100%;
 }
 
-.btn-danger {
-    background:var(--primary-color);
-    border: none;
-    padding: 8px 20px;
-    border-radius: 10px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    color: white;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 3px 10px rgba(255, 45, 117, 0.3);
-}
-
-.btn-danger::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg,var(--primary-color),var(--secondary-color));
-    transition: all 0.6s ease;
-}
-
-.btn-danger:hover {
-    background: linear-gradient(90deg,var(--primary-color),var(--secondary-color));
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(255, 45, 117, 0.4);
-}
-
-.btn-danger:hover::before {
-    left: 100%;
-}
-
 .btn-delete {
-    background: var(--primary-color);
+    background: var(--secondary-color);
     border: none;
     padding: 8px 20px;
-    border-radius: 10px;
+    border-radius: 50px;
     font-weight: 600;
     transition: all 0.3s ease;
     color: white;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 3px 10px rgba(255, 107, 107, 0.3);
+    box-shadow: 0 3px 10px blue;
 }
 
 .btn-delete::before {
@@ -220,20 +252,19 @@ body {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg,var(--primary-color),var(--secondary-color));
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
     transition: all 0.6s ease;
 }
 
 .btn-delete:hover {
-    background: linear-gradient(90deg, --primary-color,--secondary-color);
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+    box-shadow: 0 5px 15px rgba(255, 45, 117, 0.4);
 }
 
 .btn-delete:hover::before {
     left: 100%;
 }
-
 /* Modal Styling */
 .modal-content {
     background: var(--card-bg);
@@ -265,10 +296,6 @@ body {
     box-shadow: 0 0 0 0.2rem rgba(0, 198, 255, 0.25);
     background: rgba(0, 0, 0, 0.5);
     color: white;
-}
-
-.btn-close {
-    filter: brightness(0) invert(1);
 }
 
 /* Success Modal Specific */
