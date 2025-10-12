@@ -24,10 +24,7 @@ body {
     align-items:center;
     color:var(--light-color);
 }
-.main-container .non-hidden{
-    padding-left:50px;
-    padding-right:50px;
-}
+/* Removed per-page lateral padding to keep spacing consistent via main.css */
 .main-container .top-bar{
     display:flex;
     justify-content: flex-start;

@@ -19,10 +19,7 @@ body {
 }
 .main-container{
     display:grid;
-    align-items:center; 
-    padding-left: 50px;
-    padding-right: 50px;
-    margin-left: 240px; 
+    align-items:center;
     color:var(--light-color);
 }
 .main-container .top-bar{

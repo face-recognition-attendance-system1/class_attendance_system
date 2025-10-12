@@ -1,3 +1,0 @@
-[console_scripts]
-sz_split = cli.split:main
-sz_wc = cli.wc:main

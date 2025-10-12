@@ -16,8 +16,6 @@ body {
     font-family: inherit;
     overflow-x: hidden;
     min-height: 100vh;
-    padding-left: 50px;
-    padding-right: 50px;
 }
 .main-container{
     display:grid;

@@ -1,4 +1,13 @@
 /* Sidebar Component Styles */
+
+/* Sidebar sizing variables: adjust these to change icon/logo sizes */
+:root {
+  --sidebar-icon-size: 20px; /* size for font icons in nav links and brand icon */
+  --sidebar-icon-size-collapsed: 16px; /* smaller when collapsed */
+  --sidebar-logo-size: 44px; /* default logo image size when sidebar expanded */
+  --sidebar-logo-size-collapsed: 32px; /* logo size when sidebar collapsed */
+}
+
 nav.navbar {
   height: 100vh;
   width: 260px;
@@ -62,14 +71,20 @@ nav.navbar.collapsed .navbar-brand {
 
 /* reduce logo size when collapsed */
 nav.navbar.collapsed .site-logo {
-  width: 32px;
-  height: 32px;
+  width: var(--sidebar-logo-size-collapsed);
+  height: var(--sidebar-logo-size-collapsed);
   border-radius: 50%; /* keep circular when collapsed */
 }
 
 nav.navbar.collapsed .nav-link {
   justify-content: center;
   padding: 0.75rem 0;
+}
+
+/* Smaller icons when sidebar is collapsed (desktop) */
+nav.navbar.collapsed .nav-link i {
+  font-size: var(--sidebar-icon-size-collapsed);
+  width: var(--sidebar-icon-size-collapsed);
 }
 
 .navbar-brand {
@@ -86,8 +101,8 @@ nav.navbar.collapsed .nav-link {
 
 /* Logo shown in the sidebar brand area */
 .site-logo {
-  width: 44px;
-  height: 44px;
+  width: var(--sidebar-logo-size);
+  height: var(--sidebar-logo-size);
   object-fit: cover;
   border-radius: 50%; /* make it fully circular */
   box-shadow: 0 4px 12px rgba(0,0,0,0.35);
@@ -95,7 +110,8 @@ nav.navbar.collapsed .nav-link {
 }
 
 .navbar-brand i {
-  font-size: 1.4rem;
+  font-size: var(--sidebar-icon-size);
+  line-height: 1;
   flex-shrink: 0;
   color: var(--primary-color);
 }
@@ -170,9 +186,9 @@ nav.navbar.collapsed .sidebar-toggle i {
 }
 
 .nav-link i {
-  font-size: 1.1rem;
+  font-size: var(--sidebar-icon-size);
   flex-shrink: 0;
-  width: 20px;
+  width: var(--sidebar-icon-size);
   text-align: center;
 }
 

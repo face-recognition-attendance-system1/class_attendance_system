@@ -20,13 +20,16 @@
       overflow-x: hidden;
       min-height: 100%;
       background: #202841f2;
-      padding-right:50px;
-      padding-left:50px;
-
     }
+
+    /* Main container spacing: leave room for fixed sidebar and apply
+       consistent lateral padding. Use !important to reduce accidental overrides. */
     .main-container{
-      display:grid;
-      align-items:center;
+      display: grid;
+      align-items: center;
+      margin-left: 260px; /* match sidebar width */
+      padding: 20px 50px !important;
+      box-sizing: border-box;
     }
     .main-container .top-bar{
       display:flex;
@@ -163,5 +166,12 @@
         margin-left: 0;
         margin-top: 10px;
         width: 100%;
+      }
+
+      /* On small screens the sidebar becomes a top bar; remove left margin
+         and reduce padding so content fits the viewport cleanly. */
+      .main-container{
+        margin-left: 0 !important;
+        padding: 10px !important;
       }
     }
