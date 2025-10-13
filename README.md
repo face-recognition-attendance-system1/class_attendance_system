@@ -1,4 +1,2 @@
-main
 IOT project built by embedded engineers.
-
-safe-test-of-ui-design
+It is project made by EMT-03 group in INSA.
