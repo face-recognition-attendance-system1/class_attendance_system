@@ -1,5 +1,26 @@
 {
   "dependencies": {
     "bootstrap-icons": "^1.13.1"
+  },
+  "name": "class_attendance_system",
+  "description": "main IOT project built by embedded engineers.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/face-recognition-attendance-system1/class_attendance_system.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/face-recognition-attendance-system1/class_attendance_system/issues"
+  },
+  "homepage": "https://github.com/face-recognition-attendance-system1/class_attendance_system#readme",
+  "devDependencies": {
+    "electron": "^38.2.2"
   }
 }
