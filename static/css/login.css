@@ -116,19 +116,7 @@ body {
     animation: errorPulse 2s infinite;
 }
 
-.footer {
-    position: fixed;
-    font-size: 0.9rem;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
-    padding: 20px;
-    color: rgba(255, 255, 255, 0.5);
-    background: transparent;
-    border-top: 1px solid rgba(0, 198, 255, 0.2);
-    z-index: 99;
-}
+
 
 .login-icon img {
     width: 90px;
