@@ -206,7 +206,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="fireModalLabel">
-            <i class="fas fa-exclamation-triangle me-2 text-warning"></i>Confirm Firing Staff
+            Confirm Firing Staff
           </h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
@@ -216,8 +216,8 @@
           <input type="hidden" id="fireStudentId">
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-danger" id="confirmFire">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="confirmFire">
             <i class="fas fa-user-slash me-1"></i> Fire Staff
           </button>
         </div>
@@ -237,14 +237,14 @@
         </div>
         <div class="modal-body">
           <p class="fw-bold" id="deleteStaffName"></p>
-          <p class="text-warning">⚠️ This action cannot be undone! All user information will be permanently deleted from the system.</p>
+          <p class="text-warning>" This action cannot be undone! All user information will be permanently deleted from the system.</p>
           <p>Enter your admin password to confirm deletion:</p>
           <input type="password" class="form-control" id="deletePassword" placeholder="Enter your password" required>
           <input type="hidden" id="deleteStudentId">
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-delete" id="confirmDelete">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="confirmDelete">
             <i class="fas fa-trash-alt me-1"></i> Delete Permanently
           </button>
         </div>

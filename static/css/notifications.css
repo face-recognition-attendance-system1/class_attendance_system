@@ -142,33 +142,22 @@ body {
 }
 
 .btn-danger {
-    background: var(--secondary-color);
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
     border: none;
-    padding: 8px 20px;
-    border-radius: 50px;
+    padding: 15px;
+    border-radius: 15px;
     font-weight: 600;
     transition: all 0.3s ease;
     color: white;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 3px 10px blue;
-}
-
-.btn-danger::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
+    box-shadow: 0 5px 15px rgba(0, 198, 255, 0.3);
     width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: all 0.6s ease;
 }
-
 .btn-danger:hover {
-    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(255, 45, 117, 0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 198, 255, 0.4);
+    cursor: pointer;
 }
 
 .btn-danger:hover::before {
@@ -183,21 +172,6 @@ body {
     backdrop-filter: blur(10px);
 }
 
-.alert-success {
-    border-color: rgba(0, 255, 136, 0.3);
-    color: var(--success-color);
-}
-
-.alert-danger {
-    border-color: rgba(255, 45, 117, 0.3);
-    color: var(--danger-color);
-}
-
-.alert-warning {
-    border-color: rgba(255, 189, 46, 0.3);
-    color: var(--warning-color);
-}
-
 .alert-info {
     border-color: rgba(46, 240, 255, 0.3);
     color: var(--info-color);
@@ -207,7 +181,7 @@ body {
     color: var(--light-color);
     margin-bottom: 20px;
     padding-bottom: 10px;
-    border-bottom: 2px var(--light-color)
+    border-bottom: 2px var(--light-color);
 }
 
 /* Responsive Adjustments */
