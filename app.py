@@ -34,9 +34,6 @@ THRESHOLD = 0.7
 DEVICE_NAME = "Device-01"
 ADMIN_USER = "admin"
 ADMIN_PASS = "1234"
-REGISTERED_FILE = "registered.json"
-ATTENDANCE_FILE = "attendance.json"
-FIRED_FILE = "fired.json"
 # Use data/ directory for JSON storage
 REGISTERED_FILE = os.path.join('data', 'registered.json')
 ATTENDANCE_FILE = os.path.join('data', 'attendance.json')
