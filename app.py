@@ -21,19 +21,8 @@ import datetime
 from datetime import timedelta
 import time
 import threading
-# import requests
-# from datetime import datetime
-# import time
-
-# esp32_ip = "http://192.168.4.50/time"
-
-# ---------------------------
-# Config
-# ---------------------------
 THRESHOLD = 0.7
 DEVICE_NAME = "Device-01"
-ADMIN_USER = "admin"
-ADMIN_PASS = "1234"
 # Use data/ directory for JSON storage
 REGISTERED_FILE = os.path.join('data', 'registered.json')
 ATTENDANCE_FILE = os.path.join('data', 'attendance.json')
