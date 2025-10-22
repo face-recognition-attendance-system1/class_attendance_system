@@ -2,8 +2,8 @@
 
 /* Sidebar sizing variables: adjust these to change icon/logo sizes */
 :root {
-  --sidebar-icon-size: 20px; /* size for font icons in nav links and brand icon */
-  --sidebar-icon-size-collapsed: 16px; /* smaller when collapsed */
+  --sidebar-icon-size: 22px; /* size for font icons in nav links and brand icon */
+  --sidebar-icon-size-collapsed: 18px; /* smaller when collapsed */
   --sidebar-logo-size: 44px; /* default logo image size when sidebar expanded */
   --sidebar-logo-size-collapsed: 32px; /* logo size when sidebar collapsed */
 }
