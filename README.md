@@ -64,18 +64,6 @@ Key libraries used:
 
 ---
 
-## 🧠 Model & Data
-
-After setup, the structure will look like this:
-
-```
-data/
- ├── users.json          # Contains registered user face embeddings and names
- └── attendance.json     # Contains timestamped attendance records
-
-models/
- └── insightface_model/  # Pretrained model downloaded automatically
-```
 
 ---
 
