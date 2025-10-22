@@ -16,24 +16,17 @@ import smtplib
 from email.message import EmailMessage
 import time
 import requests
-# from datetime import datetime
 import datetime
 from datetime import timedelta
 import time
 import threading
-# import requests
-# from datetime import datetime
-# import time
-
-# esp32_ip = "http://192.168.4.50/time"
 
 # ---------------------------
 # Config
 # ---------------------------
 THRESHOLD = 0.7
 DEVICE_NAME = "Device-01"
-ADMIN_USER = "admin"
-ADMIN_PASS = "1234"
+
 # Use data/ directory for JSON storage
 REGISTERED_FILE = os.path.join('data', 'registered.json')
 ATTENDANCE_FILE = os.path.join('data', 'attendance.json')
@@ -1024,4 +1017,5 @@ if __name__ == "__main__":
         logger.info("Webpage: http://127.0.0.1:5000")
         app.run(debug=True)
     except Exception as e:
+
         logger.error(f"Flask app failed to start: {e}")
