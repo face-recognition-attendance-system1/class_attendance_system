@@ -20,7 +20,6 @@ import datetime
 from datetime import timedelta
 import time
 import threading
-<<<<<<< HEAD
 #---------------------------------------------------------------
 THRESHOLD = 0.7
 DEVICE_NAME = "Device-01"
@@ -51,6 +50,39 @@ class DateTimeEncoder(json.JSONEncoder):
         if isinstance(o, np.ndarray):
             return o.tolist()
         return super().default(o)
+import threading
+import requests
+import datetime
+import time
+
+ESP32_IP = "192.168.4.1"  # Default ESP32 AP IP
+URL = f"http://{ESP32_IP}/time"
+
+def send_time():
+    """Continuously send current time to ESP32 every minute."""
+    last_minute = -1
+    while True:
+        try:
+            now = datetime.datetime.now()
+            if now.minute != last_minute:
+                time_str = now.strftime("%H:%M:%S")
+                response = requests.post(URL, data=time_str, timeout=5)
+                
+                if response.status_code == 200:
+                    print(f"[SYNC OK] Sent time {time_str} | Response: {response.text}")
+                else:
+                    print(f"[SYNC FAIL] {response.status_code}: {response.text}")
+                
+                last_minute = now.minute
+
+            time.sleep(1)
+        except requests.exceptions.RequestException as e:
+            print(f"[SYNC WARN] Connection error: {e}")
+            time.sleep(5)
+        except Exception as e:
+            print(f"[SYNC ERROR] Unexpected: {e}")
+            time.sleep(5)
+
 
 
 def load_data(file_path, parse_ts=False):
@@ -1015,9 +1047,12 @@ def delete_staff():
 # ---------------------------
 if __name__ == "__main__":
     try:
+        time_thread = threading.Thread(target=send_time, daemon=True)
+        time_thread.start()
+        print("Flask server running with ESP32 time sync...")
+        app.run(host="0.0.0.0", port=5000, debug=True)
         logger.info("Starting Flask app")
         logger.info("Webpage: http://127.0.0.1:5000")
         app.run(debug=True)
     except Exception as e:
-
         logger.error(f"Flask app failed to start: {e}")
