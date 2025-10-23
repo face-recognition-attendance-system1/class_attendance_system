@@ -16,5 +16,14 @@
     "department": "Guard",
     "fired_by": "Beamlak",
     "fired_timestamp": "2025-10-08T14:40:45.542331"
+  },
+  {
+    "student_id": "cvbnm",
+    "name": "v nbnb",
+    "email": "admin@jk.com",
+    "phone": "0985414412",
+    "department": "HR",
+    "fired_by": "admin",
+    "fired_timestamp": "2025-10-24T02:50:48.953203"
   }
 ]

@@ -23,14 +23,13 @@ import threading
 #---------------------------------------------------------------
 THRESHOLD = 0.7
 DEVICE_NAME = "Device-01"
-
-
 # ---------------------------
 # Use data/ directory for JSON storage
 REGISTERED_FILE = os.path.join('data', 'registered.json')
 ATTENDANCE_FILE = os.path.join('data', 'attendance.json')
 FIRED_FILE = os.path.join('data', 'fired.json')
 ADMIN_USER = "admin"
+ADMIN_PASS = "1234"
  
 ADMINS_DEPARTMENT = "Admin"
 IP_CAMERA_URL = "http://192.168.4.50/stream"  # ESP32-CAM OV2640 MJPEG stream for attendance
@@ -50,11 +49,6 @@ class DateTimeEncoder(json.JSONEncoder):
         if isinstance(o, np.ndarray):
             return o.tolist()
         return super().default(o)
-import threading
-import requests
-import datetime
-import time
-
 ESP32_IP = "192.168.4.1"  # Default ESP32 AP IP
 URL = f"http://{ESP32_IP}/time"
 
