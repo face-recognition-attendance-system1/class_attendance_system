@@ -21,12 +21,15 @@ import datetime
 from datetime import timedelta
 import time
 import threading
+#---------------------------------------------------------------
+# Configuration
 THRESHOLD = 0.7
 DEVICE_NAME = "Device-01"
 # Use data/ directory for JSON storage
 REGISTERED_FILE = os.path.join('data', 'registered.json')
 ATTENDANCE_FILE = os.path.join('data', 'attendance.json')
 FIRED_FILE = os.path.join('data', 'fired.json')
+ADMIN_USER = "admin"
 ADMINS_DEPARTMENT = "Admin"
 IP_CAMERA_URL = "http://192.168.4.50/stream"  # ESP32-CAM OV2640 MJPEG stream for attendance
 esp32_ip = "http://192.168.4.50/time"
