@@ -351,12 +351,6 @@ nav.navbar:not(.collapsed) .nav-link:hover {
 
   /* Removed older mobile adjustments replaced by refined cluster styles */
 }
-/* ...existing code... */
-
-/* Separator above logout */
-/* ...existing code... */
-
-/* Separator above logout */
 .sidebar-footer .sidebar-separator {
   border: none;                      /* remove default hr border */
   height: 1px;                       /* thickness */
@@ -384,5 +378,15 @@ nav.navbar:not(.collapsed) .nav-link:hover {
   height: 2px;
 }
 
-/* ...existing code... */
-/* ...existing code... */
+
+
+
+
+
+
+
+
+
+
+
+

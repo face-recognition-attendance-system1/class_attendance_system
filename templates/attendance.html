@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Global site font and main styles -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/components/sidebar.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/attendance.css') }}">
 </head>
 <body>
@@ -114,7 +114,6 @@
                   </select>
                 </div>
               </div>
-              <button type="submit" class="btn btn-primary"><i class="fas fa-filter me-2"></i> Filter</button>
             </form>
 
             <div id="loading-indicator" class="loading-indicator">

@@ -16,28 +16,21 @@ import smtplib
 from email.message import EmailMessage
 import time
 import requests
-# from datetime import datetime
 import datetime
 from datetime import timedelta
 import time
 import threading
-# import requests
-# from datetime import datetime
-# import time
-
-# esp32_ip = "http://192.168.4.50/time"
-
-# ---------------------------
-# Config
-# ---------------------------
+#---------------------------------------------------------------
 THRESHOLD = 0.7
 DEVICE_NAME = "Device-01"
-ADMIN_USER = "admin"
-ADMIN_PASS = "1234"
+# ---------------------------
 # Use data/ directory for JSON storage
 REGISTERED_FILE = os.path.join('data', 'registered.json')
 ATTENDANCE_FILE = os.path.join('data', 'attendance.json')
 FIRED_FILE = os.path.join('data', 'fired.json')
+ADMIN_USER = "admin"
+ADMIN_PASS = "1234"
+ 
 ADMINS_DEPARTMENT = "Admin"
 IP_CAMERA_URL = "http://192.168.4.50/stream"  # ESP32-CAM OV2640 MJPEG stream for attendance
 esp32_ip = "http://192.168.4.50/time"
@@ -56,6 +49,34 @@ class DateTimeEncoder(json.JSONEncoder):
         if isinstance(o, np.ndarray):
             return o.tolist()
         return super().default(o)
+ESP32_IP = "192.168.4.1"  # Default ESP32 AP IP
+URL = f"http://{ESP32_IP}/time"
+
+def send_time():
+    """Continuously send current time to ESP32 every minute."""
+    last_minute = -1
+    while True:
+        try:
+            now = datetime.datetime.now()
+            if now.minute != last_minute:
+                time_str = now.strftime("%H:%M:%S")
+                response = requests.post(URL, data=time_str, timeout=5)
+                
+                if response.status_code == 200:
+                    print(f"[SYNC OK] Sent time {time_str} | Response: {response.text}")
+                else:
+                    print(f"[SYNC FAIL] {response.status_code}: {response.text}")
+                
+                last_minute = now.minute
+
+            time.sleep(1)
+        except requests.exceptions.RequestException as e:
+            print(f"[SYNC WARN] Connection error: {e}")
+            time.sleep(5)
+        except Exception as e:
+            print(f"[SYNC ERROR] Unexpected: {e}")
+            time.sleep(5)
+
 
 
 def load_data(file_path, parse_ts=False):
@@ -1020,6 +1041,10 @@ def delete_staff():
 # ---------------------------
 if __name__ == "__main__":
     try:
+        time_thread = threading.Thread(target=send_time, daemon=True)
+        time_thread.start()
+        print("Flask server running with ESP32 time sync...")
+        app.run(host="0.0.0.0", port=5000, debug=True)
         logger.info("Starting Flask app")
         logger.info("Webpage: http://127.0.0.1:5000")
         app.run(debug=True)
