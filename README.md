@@ -1,5 +1,9 @@
 # 🧠 Face Recognition Attendance System (Flask + InsightFace)
-
+<div align="center">
+  <img src="asset/demo.jpg" width="560"/>
+</div>
+<br/>
+<br/>
 A lightweight **Face Recognition Attendance System** built with **Flask** and **InsightFace**, using **JSON files** for data storage — no SQL or external database required.
 
 This app recognizes faces in real-time or from uploaded images, marking attendance automatically and storing records in local JSON files.
