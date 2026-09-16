@@ -2,4 +2,3 @@ testenv/
 node_modules/
 requirements.txt
 data/
-images/
